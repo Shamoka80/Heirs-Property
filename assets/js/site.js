@@ -3,12 +3,64 @@
 
   var navToggle = document.querySelector("[data-nav-toggle]");
   var primaryNav = document.querySelector("[data-primary-nav]");
-  if (navToggle && primaryNav && window.matchMedia("(max-width: 899px)").matches) {
-    primaryNav.classList.add("is-collapsible");
+  var mobileQuery = window.matchMedia("(max-width: 899px)");
+
+  function openNav() {
+    primaryNav.classList.add("is-open");
+    navToggle.setAttribute("aria-expanded", "true");
+  }
+
+  function closeNav() {
+    primaryNav.classList.remove("is-open");
+    navToggle.setAttribute("aria-expanded", "false");
+  }
+
+  function syncNavigationMode() {
+    if (!navToggle || !primaryNav) {
+      return;
+    }
+
+    if (mobileQuery.matches) {
+      primaryNav.classList.add("is-collapsible");
+      closeNav();
+      return;
+    }
+
+    primaryNav.classList.remove("is-collapsible", "is-open");
+    navToggle.setAttribute("aria-expanded", "false");
+  }
+
+  if (navToggle && primaryNav) {
+    syncNavigationMode();
+
     navToggle.addEventListener("click", function () {
-      var open = primaryNav.classList.toggle("is-open");
-      navToggle.setAttribute("aria-expanded", String(open));
+      var isOpen = primaryNav.classList.contains("is-open");
+      if (isOpen) {
+        closeNav();
+      } else {
+        openNav();
+      }
     });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeNav();
+      }
+    });
+
+    Array.prototype.forEach.call(primaryNav.querySelectorAll("a"), function (link) {
+      link.addEventListener("click", function () {
+        if (mobileQuery.matches) {
+          closeNav();
+        }
+      });
+    });
+
+    if (typeof mobileQuery.addEventListener === "function") {
+      mobileQuery.addEventListener("change", syncNavigationMode);
+    } else if (typeof mobileQuery.addListener === "function") {
+      mobileQuery.addListener(syncNavigationMode);
+    }
   }
 
   if (window.HeirsPropertyStorage) {
