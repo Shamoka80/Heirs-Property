@@ -7,6 +7,7 @@
 
   var status = document.querySelector("[data-notes-status]");
   var fields = Array.prototype.slice.call(form.querySelectorAll("[data-notes-field]"));
+  var hasStorage = storage.canUseLocalStorage();
 
   function readNotes() {
     return storage.readJson(storage.keys.notes, {});
@@ -16,7 +17,7 @@
     var ok = storage.writeJson(storage.keys.notes, notes);
     if (status) {
       status.textContent = ok
-        ? "Saved only in this browser on this device."
+        ? "Saved in this browser on this device at " + new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) + "."
         : "This browser is not allowing local saving right now.";
     }
     return ok;
@@ -69,6 +70,9 @@
   }
 
   populate(readNotes());
+  if (status && !hasStorage) {
+    status.textContent = "Local saving is unavailable in this browser right now.";
+  }
 
   form.addEventListener("input", function () {
     writeNotes(collectNotes());

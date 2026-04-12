@@ -67,10 +67,25 @@
   var navToggle = document.querySelector("[data-nav-toggle]");
   var primaryNav = document.querySelector("[data-primary-nav]");
   var mobileQuery = window.matchMedia("(max-width: 899px)");
+  var sectionToPrint = null;
+  var navLinks = primaryNav ? Array.prototype.slice.call(primaryNav.querySelectorAll("a")) : [];
+
+  navLinks.forEach(function (link) {
+    var href = link.getAttribute("href");
+    if (href === pageKey) {
+      link.setAttribute("aria-current", "page");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
 
   function openNav() {
     primaryNav.classList.add("is-open");
     navToggle.setAttribute("aria-expanded", "true");
+    var firstLink = primaryNav.querySelector("a");
+    if (firstLink) {
+      firstLink.focus();
+    }
   }
 
   function closeNav() {
@@ -100,6 +115,7 @@
       var isOpen = primaryNav.classList.contains("is-open");
       if (isOpen) {
         closeNav();
+        navToggle.focus();
       } else {
         openNav();
       }
@@ -111,12 +127,22 @@
       }
     });
 
-    Array.prototype.forEach.call(primaryNav.querySelectorAll("a"), function (link) {
+    navLinks.forEach(function (link) {
       link.addEventListener("click", function () {
         if (mobileQuery.matches) {
           closeNav();
         }
       });
+    });
+
+    document.addEventListener("click", function (event) {
+      if (!mobileQuery.matches || !primaryNav.classList.contains("is-open")) {
+        return;
+      }
+      if (primaryNav.contains(event.target) || navToggle.contains(event.target)) {
+        return;
+      }
+      closeNav();
     });
 
     if (typeof mobileQuery.addEventListener === "function") {
@@ -128,6 +154,14 @@
 
   if (window.HeirsPropertyStorage) {
     var currentPage = window.location.pathname.split("/").pop() || "index.html";
+    var returnLink = document.querySelector("[data-return-link]");
+    var lastPage = window.HeirsPropertyStorage.readJson(window.HeirsPropertyStorage.keys.lastPage, "");
+    if (returnLink) {
+      if (lastPage && lastPage !== currentPage) {
+        returnLink.href = lastPage;
+        returnLink.hidden = false;
+      }
+    }
     window.HeirsPropertyStorage.writeJson(window.HeirsPropertyStorage.keys.lastPage, currentPage);
   }
 
@@ -262,28 +296,55 @@
     });
   });
 
+  function clearSectionPrintMode() {
+    document.body.classList.remove("print-section-mode");
+    Array.prototype.forEach.call(document.querySelectorAll(".print-target"), function (target) {
+      target.classList.remove("print-target");
+    });
+    sectionToPrint = null;
+  }
+
+  window.addEventListener("afterprint", clearSectionPrintMode);
+
   Array.prototype.forEach.call(document.querySelectorAll("[data-print-section]"), function (button) {
     button.addEventListener("click", function () {
       var section = button.closest("section");
       if (section && section.scrollIntoView) {
         section.scrollIntoView({ behavior: "smooth", block: "start" });
       }
+      sectionToPrint = section;
+      if (sectionToPrint) {
+        document.body.classList.add("print-section-mode");
+        sectionToPrint.classList.add("print-target");
+      }
       window.setTimeout(function () {
         window.print();
+        if (!window.matchMedia("print").matches) {
+          clearSectionPrintMode();
+        }
       }, 150);
     });
   });
 
+  var initializedChecklists = {};
   Array.prototype.forEach.call(document.querySelectorAll("[data-checklist]"), function (list) {
     if (!window.HeirsPropertyStorage) {
       return;
     }
 
     var key = list.getAttribute("data-checklist");
+    if (initializedChecklists[key]) {
+      return;
+    }
+    initializedChecklists[key] = true;
+
     var storage = window.HeirsPropertyStorage.readJson(window.HeirsPropertyStorage.keys.checklists, {});
     var savedState = storage[key] || {};
-    var boxes = Array.prototype.slice.call(list.querySelectorAll('input[type="checkbox"]'));
+    var boxes = Array.prototype.slice.call(document.querySelectorAll('[data-checklist="' + key + '"] input[type="checkbox"]'));
     var status = document.querySelector('[data-checklist-status="' + key + '"]');
+    if (status && !window.HeirsPropertyStorage.canUseLocalStorage()) {
+      status.textContent = "Checklist progress cannot be saved in this browser right now.";
+    }
 
     boxes.forEach(function (box) {
       var itemId = box.getAttribute("data-item-id");
