@@ -339,6 +339,8 @@ textarea { min-height: 8rem; resize: vertical; }
   .section-header { flex-direction: column; align-items: flex-start; }
 }
 
+.mobile-help-strip { display: none; }
+
 @media (min-width: 900px) {
   .layout.with-aside { grid-template-columns: minmax(0,1fr) 300px; }
   .nav-toggle { display: none; }
@@ -349,6 +351,9 @@ textarea { min-height: 8rem; resize: vertical; }
 
 @media (max-width: 700px) {
   html { font-size: 17px; }
+  .mobile-help-strip-inner { flex-direction: column; align-items: stretch; }
+  .mobile-help-actions { width: 100%; }
+  .mobile-help-actions a { flex: 1; }
   .header-inner,.container,.footer-inner,.page-head-inner { width: min(calc(100% - 1rem), var(--max)); }
   .page-head-inner { padding: 2rem 0; }
   table { min-width: 30rem; }
