@@ -1,0 +1,33 @@
+<svg width="900" height="620" viewBox="0 0 900 620" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Illustrated deed and land stewardship visual</title>
+  <desc id="desc">A calm illustration of a recorded deed, contour lines, parcel markers, and timeline steps to represent family land stewardship.</desc>
+  <rect width="900" height="620" rx="28" fill="#F7F2E8"/>
+  <rect x="46" y="42" width="808" height="536" rx="22" fill="#FCFAF6" stroke="#D2C6B1"/>
+  <path d="M88 462C182 412 240 398 332 408C429 419 511 474 596 474C687 474 760 430 810 408" stroke="#B99367" stroke-width="4" stroke-linecap="round"/>
+  <path d="M87 503C170 467 265 455 333 462C430 473 528 528 614 528C695 528 759 483 813 461" stroke="#D8C09A" stroke-width="3" stroke-linecap="round"/>
+  <path d="M88 378C180 328 255 307 346 322C443 337 523 383 606 383C696 383 761 347 811 324" stroke="#C4A072" stroke-width="4" stroke-linecap="round"/>
+  <rect x="120" y="109" width="348" height="242" rx="14" fill="#FFF" stroke="#CBB89A"/>
+  <rect x="146" y="140" width="186" height="14" rx="7" fill="#1F365A"/>
+  <rect x="146" y="170" width="292" height="8" rx="4" fill="#D7CBB6"/>
+  <rect x="146" y="190" width="272" height="8" rx="4" fill="#D7CBB6"/>
+  <rect x="146" y="210" width="252" height="8" rx="4" fill="#D7CBB6"/>
+  <rect x="146" y="230" width="215" height="8" rx="4" fill="#D7CBB6"/>
+  <rect x="146" y="262" width="140" height="34" rx="17" fill="#EEDFCC" stroke="#C8AF8B"/>
+  <path d="M548 158L640 110L732 158L640 206L548 158Z" fill="#E7D7BF" stroke="#B39063" stroke-width="2"/>
+  <path d="M554 158V244L640 292V206" stroke="#B39063" stroke-width="2"/>
+  <path d="M726 158V244L640 292V206" stroke="#B39063" stroke-width="2"/>
+  <circle cx="640" cy="160" r="8" fill="#1F365A"/>
+  <circle cx="604" cy="230" r="7" fill="#B76839"/>
+  <circle cx="678" cy="230" r="7" fill="#2E6C4D"/>
+  <rect x="520" y="338" width="261" height="142" rx="14" fill="#FFF" stroke="#CBB89A"/>
+  <circle cx="561" cy="375" r="16" fill="#F0E1CA" stroke="#C8AF8B"/>
+  <path d="M553 375H569" stroke="#1F365A" stroke-width="2" stroke-linecap="round"/>
+  <path d="M561 367V383" stroke="#1F365A" stroke-width="2" stroke-linecap="round"/>
+  <rect x="590" y="365" width="160" height="8" rx="4" fill="#CFC2AD"/>
+  <rect x="590" y="385" width="124" height="8" rx="4" fill="#CFC2AD"/>
+  <circle cx="561" cy="432" r="16" fill="#E7EEF7" stroke="#9BAFC9"/>
+  <path d="M553 432H569" stroke="#1F365A" stroke-width="2" stroke-linecap="round"/>
+  <path d="M561 424V440" stroke="#1F365A" stroke-width="2" stroke-linecap="round"/>
+  <rect x="590" y="422" width="145" height="8" rx="4" fill="#CFC2AD"/>
+  <rect x="590" y="442" width="102" height="8" rx="4" fill="#CFC2AD"/>
+</svg>
