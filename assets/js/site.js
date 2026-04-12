@@ -123,7 +123,11 @@
 
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape") {
+        var shouldReturnFocus = mobileQuery.matches && primaryNav.classList.contains("is-open") && primaryNav.contains(document.activeElement);
         closeNav();
+        if (shouldReturnFocus) {
+          navToggle.focus();
+        }
       }
     });
 
