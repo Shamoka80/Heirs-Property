@@ -312,6 +312,12 @@ textarea { min-height: 8rem; resize: vertical; }
 
 .footer { background: var(--surface-strong-2); color: #eff2f8; padding: 2.3rem 0; margin-top: 2.2rem; }
 .footer a { color: #fff; }
+.footer-emergency h2 {
+  margin: 0 0 .65rem;
+  color: #fff;
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+}
+
 .footer-inner { display: grid; gap: 1.5rem; }
 .footer-nav { display:grid; gap:1rem; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); }
 .footer-nav h2,
