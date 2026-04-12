@@ -16,7 +16,7 @@ body { background:#fff!important; color:#000!important; font-size:12pt; line-hei
 }
 .breadcrumbs { margin-bottom:1rem; }
 a { color:#000!important; text-decoration:none; }
-a[href^="http"]::after { content:" (" attr(href) ")"; font-size:.9em; }
+a[href]:not([href^="#"]):not([href^="tel:"]):not([href^="mailto:"])::after { content:" (" attr(href) ")"; font-size:.9em; }
 table { min-width:0!important; width:100%!important; }
 h2,h3,h4 { break-after:avoid-page; }
 textarea,input { border:1px solid #666!important; }
