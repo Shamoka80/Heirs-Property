@@ -123,7 +123,11 @@
 
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape") {
+        var shouldReturnFocus = mobileQuery.matches && primaryNav.classList.contains("is-open") && primaryNav.contains(document.activeElement);
         closeNav();
+        if (shouldReturnFocus) {
+          navToggle.focus();
+        }
       }
     });
 
@@ -163,39 +167,6 @@
       }
     }
     window.HeirsPropertyStorage.writeJson(window.HeirsPropertyStorage.keys.lastPage, currentPage);
-  }
-
-  var pageMetaMap = {
-    "index.html": "6 min read",
-    "start-here.html": "8 min read",
-    "what-is-heirs-property.html": "9 min read",
-    "how-families-lose-land.html": "9 min read",
-    "south-carolina-legal-protections.html": "8 min read",
-    "what-to-do-first.html": "10 min read",
-    "protecting-preserving-family-land.html": "8 min read",
-    "economic-opportunities.html": "7 min read",
-    "history-culture-legacy.html": "7 min read",
-    "resources-get-help.html": "6 min read",
-    "notes.html": "5 min read",
-    "printable-guide.html": "12 min read",
-    "about-this-guide.html": "5 min read",
-    "accessibility.html": "4 min read",
-    "404.html": "1 min read"
-  };
-
-  var pageHeadInner = document.querySelector(".page-head-inner");
-  if (pageHeadInner && !pageHeadInner.querySelector(".page-meta")) {
-    var pageMeta = document.createElement("p");
-    pageMeta.className = "page-meta";
-    var updated = document.createElement("span");
-    updated.className = "meta-badge";
-    updated.textContent = "Last updated: April 12, 2026";
-    var readTime = document.createElement("span");
-    readTime.className = "meta-badge";
-    readTime.textContent = "Estimated read: " + (pageMetaMap[pageKey] || "6 min read");
-    pageMeta.appendChild(updated);
-    pageMeta.appendChild(readTime);
-    pageHeadInner.appendChild(pageMeta);
   }
 
   var longPages = {
