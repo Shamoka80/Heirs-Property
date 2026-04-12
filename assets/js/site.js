@@ -1,5 +1,68 @@
 (function () {
   document.documentElement.classList.add("js");
+  var pageKey = window.location.pathname.split("/").pop() || "index.html";
+  var isHome = pageKey === "index.html";
+
+  var footer = document.querySelector("[data-shared-footer]");
+  if (footer) {
+    if (!isHome) {
+      footer.classList.add("footer-compact");
+    }
+    var footerGroups = [
+      {
+        title: "Start",
+        links: [
+          { href: "index.html", label: "Home" },
+          { href: "start-here.html", label: "Start here" },
+          { href: "what-to-do-first.html", label: "What to do first" }
+        ]
+      },
+      {
+        title: "Learn",
+        links: [
+          { href: "what-is-heirs-property.html", label: "What is heirs’ property?" },
+          { href: "how-families-lose-land.html", label: "How families lose land" },
+          { href: "south-carolina-legal-protections.html", label: "South Carolina legal protections" },
+          { href: "protecting-preserving-family-land.html", label: "Protecting family land" },
+          { href: "economic-opportunities.html", label: "Economic opportunities" },
+          { href: "history-culture-legacy.html", label: "History, culture, and legacy" }
+        ]
+      },
+      {
+        title: "Action tools",
+        links: [
+          { href: "resources-get-help.html", label: "Get help" },
+          { href: "notes.html", label: "Notes" },
+          { href: "printable-guide.html", label: "Printable guide" }
+        ]
+      },
+      {
+        title: "About & access",
+        links: [
+          { href: "accessibility.html", label: "Accessibility" },
+          { href: "about-this-guide.html", label: "About this guide" }
+        ]
+      }
+    ];
+
+    var footerNav = footerGroups.map(function (group) {
+      var links = group.links.map(function (link) {
+        var current = link.href === pageKey ? ' aria-current="page"' : "";
+        return '<li><a href="' + link.href + '"' + current + ">" + link.label + "</a></li>";
+      }).join("");
+      return "<section><h2>" + group.title + "</h2><ul>" + links + "</ul></section>";
+    }).join("");
+
+    footer.innerHTML =
+      '<div class="footer-inner">' +
+        '<section class="footer-emergency">' +
+          "<h2>Need help now?</h2>" +
+          '<p>For heirs’ property assistance in South Carolina, contact the Center for Heirs’ Property at <a href="tel:+18437457055">(843) 745-7055</a> or toll-free at <a href="tel:+18666572676">(866) 657-2676</a>. For civil legal-aid intake, contact South Carolina Legal Services at <a href="tel:+18883465592">(888) 346-5592</a>.</p>' +
+          '<p class="small">This guide is educational information, not legal advice. Laws, court procedures, agency rules, and program eligibility can change. Confirm details with an attorney, legal aid office, or official agency before acting.</p>' +
+        "</section>" +
+        '<nav class="footer-nav" aria-label="Footer sections">' + footerNav + "</nav>" +
+      "</div>";
+  }
 
   var navToggle = document.querySelector("[data-nav-toggle]");
   var primaryNav = document.querySelector("[data-primary-nav]");
@@ -68,7 +131,6 @@
     window.HeirsPropertyStorage.writeJson(window.HeirsPropertyStorage.keys.lastPage, currentPage);
   }
 
-  var pageKey = window.location.pathname.split("/").pop() || "index.html";
   var pageMetaMap = {
     "index.html": "6 min read",
     "start-here.html": "8 min read",
@@ -115,6 +177,45 @@
     "printable-guide.html": true
   };
 
+  var nextStepMap = {
+    "start-here.html": [
+      { href: "what-to-do-first.html", label: "Build your staged action timeline" },
+      { href: "resources-get-help.html", label: "Prepare for legal/community support calls" }
+    ],
+    "what-is-heirs-property.html": [
+      { href: "how-families-lose-land.html", label: "Review common land-loss pathways" },
+      { href: "south-carolina-legal-protections.html", label: "See South Carolina protections" }
+    ],
+    "how-families-lose-land.html": [
+      { href: "what-to-do-first.html", label: "Use immediate action steps" },
+      { href: "notes.html", label: "Track your warning signs privately" }
+    ],
+    "south-carolina-legal-protections.html": [
+      { href: "what-to-do-first.html", label: "Apply protections in your next actions" },
+      { href: "resources-get-help.html", label: "Contact support with focused questions" }
+    ],
+    "what-to-do-first.html": [
+      { href: "notes.html", label: "Document facts, deadlines, and questions" },
+      { href: "resources-get-help.html", label: "Get legal and community help" }
+    ],
+    "economic-opportunities.html": [
+      { href: "protecting-preserving-family-land.html", label: "Return to preservation strategy choices" },
+      { href: "history-culture-legacy.html", label: "Ground decisions in family legacy" }
+    ],
+    "history-culture-legacy.html": [
+      { href: "protecting-preserving-family-land.html", label: "Move from history to stewardship planning" },
+      { href: "notes.html", label: "Capture family goals and concerns" }
+    ],
+    "resources-get-help.html": [
+      { href: "notes.html", label: "Prepare your call notes and questions" },
+      { href: "printable-guide.html", label: "Bring a print companion to appointments" }
+    ],
+    "printable-guide.html": [
+      { href: "notes.html", label: "Continue tracking updates in Notes" },
+      { href: "resources-get-help.html", label: "Use support contacts for next actions" }
+    ]
+  };
+
   if (longPages[pageKey]) {
     Array.prototype.forEach.call(document.querySelectorAll(".page-main > section.section"), function (section) {
       if (section.querySelector(".section-tools")) {
@@ -137,6 +238,22 @@
       tools.appendChild(saveLink);
       section.appendChild(tools);
     });
+  }
+
+  if (nextStepMap[pageKey] && !document.querySelector(".next-step-panel")) {
+    var pageMain = document.querySelector(".page-main");
+    if (pageMain) {
+      var nextLinks = nextStepMap[pageKey].map(function (link) {
+        return '<a class="card" href="' + link.href + '"><strong>Next step:</strong><br>' + link.label + "</a>";
+      }).join("");
+      var nextPanel = document.createElement("nav");
+      nextPanel.className = "section next-step-panel";
+      nextPanel.setAttribute("aria-label", "Next steps");
+      nextPanel.innerHTML =
+        '<div class="section-header"><h2>Where to go next</h2><p>Continue with the most relevant pathway.</p></div>' +
+        '<div class="card-grid">' + nextLinks + "</div>";
+      pageMain.appendChild(nextPanel);
+    }
   }
 
   Array.prototype.forEach.call(document.querySelectorAll("[data-print]"), function (button) {
