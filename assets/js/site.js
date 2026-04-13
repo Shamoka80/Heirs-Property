@@ -212,16 +212,22 @@
   }
 
   if (window.HeirsPropertyStorage) {
-    var currentPage = window.location.pathname.split("/").pop() || "index.html";
+    var currentPage = pageKey;
+    var isKnownCurrentPage = !!knownPages[currentPage];
     var returnLink = document.querySelector("[data-return-link]");
     var lastPage = window.HeirsPropertyStorage.readJson(window.HeirsPropertyStorage.keys.lastPage, "");
+    var isKnownLastPage = !!knownPages[lastPage];
+
     if (returnLink) {
-      if (lastPage && lastPage !== currentPage) {
+      if (isKnownLastPage && lastPage !== currentPage) {
         returnLink.href = lastPage;
         returnLink.hidden = false;
       }
     }
-    window.HeirsPropertyStorage.writeJson(window.HeirsPropertyStorage.keys.lastPage, currentPage);
+
+    if (isKnownCurrentPage) {
+      window.HeirsPropertyStorage.writeJson(window.HeirsPropertyStorage.keys.lastPage, currentPage);
+    }
   }
 
   var longPages = {
