@@ -309,33 +309,6 @@
     });
   });
 
-  function setupResponsiveTables() {
-    Array.prototype.forEach.call(document.querySelectorAll(".table-wrap table"), function (table) {
-      var headerCells = Array.prototype.slice.call(table.querySelectorAll("thead th"));
-      if (!headerCells.length) {
-        return;
-      }
-
-      Array.prototype.forEach.call(table.querySelectorAll("tbody tr"), function (row) {
-        var cells = Array.prototype.slice.call(row.children);
-        cells.forEach(function (cell, index) {
-          if (cell.tagName !== "TD") {
-            return;
-          }
-          var header = headerCells[index];
-          if (!header) {
-            return;
-          }
-          cell.setAttribute("data-label", header.textContent.trim());
-        });
-      });
-
-      table.setAttribute("data-responsive", "stack");
-    });
-  }
-
-  setupResponsiveTables();
-
   function clearSectionPrintMode() {
     document.body.classList.remove("print-section-mode");
     Array.prototype.forEach.call(document.querySelectorAll(".print-target"), function (target) {
