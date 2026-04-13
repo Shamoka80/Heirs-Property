@@ -1,72 +1,38 @@
 (function () {
   document.documentElement.classList.add("js");
   var pageKey = window.location.pathname.split("/").pop() || "index.html";
-  var isHome = pageKey === "index.html";
 
   var footer = document.querySelector("[data-shared-footer]");
   if (footer) {
-    if (!isHome) {
-      footer.classList.add("footer-compact");
-    }
-    var footerGroups = [
-      {
-        title: "Start",
-        links: [
-          { href: "index.html", label: "Home" },
-          { href: "start-here.html", label: "Start here" },
-          { href: "what-to-do-first.html", label: "What to do first" }
-        ]
-      },
-      {
-        title: "Learn",
-        links: [
-          { href: "what-is-heirs-property.html", label: "What is heirs’ property?" },
-          { href: "how-families-lose-land.html", label: "How families lose land" },
-          { href: "south-carolina-legal-protections.html", label: "South Carolina legal protections" },
-          { href: "protecting-preserving-family-land.html", label: "Protecting family land" },
-          { href: "economic-opportunities.html", label: "Economic opportunities" },
-          { href: "history-culture-legacy.html", label: "History, culture, and legacy" }
-        ]
-      },
-      {
-        title: "Action tools",
-        links: [
-          { href: "resources-get-help.html", label: "Get help" },
-          { href: "notes.html", label: "Notes" },
-          { href: "printable-guide.html", label: "Printable guide" }
-        ]
-      },
-      {
-        title: "About & access",
-        links: [
-          { href: "accessibility.html", label: "Accessibility" },
-          { href: "about-this-guide.html", label: "About this guide" }
-        ]
-      }
+    var footerLinks = [
+      { href: "index.html", label: "Home" },
+      { href: "start-here.html", label: "Start here" },
+      { href: "what-is-heirs-property.html", label: "Learn the basics" },
+      { href: "what-to-do-first.html", label: "What to do first" },
+      { href: "notes.html", label: "Notes" },
+      { href: "resources-get-help.html", label: "Get help" },
+      { href: "printable-guide.html", label: "Printable guide" }
     ];
-
-    var footerNav = footerGroups.map(function (group) {
-      var links = group.links.map(function (link) {
-        var current = link.href === pageKey ? ' aria-current="page"' : "";
-        return '<li><a href="' + link.href + '"' + current + ">" + link.label + "</a></li>";
-      }).join("");
-      return "<section><h2>" + group.title + "</h2><ul>" + links + "</ul></section>";
+    var footerNav = footerLinks.map(function (link) {
+      var current = link.href === pageKey ? ' aria-current="page"' : "";
+      return '<li><a href="' + link.href + '"' + current + ">" + link.label + "</a></li>";
     }).join("");
 
     footer.innerHTML =
       '<div class="footer-inner">' +
-        '<section class="footer-emergency">' +
-          "<h2>Need help now?</h2>" +
-          '<p>For heirs’ property assistance in South Carolina, contact the Center for Heirs’ Property at <a href="tel:+18437457055">(843) 745-7055</a> or toll-free at <a href="tel:+18666572676">(866) 657-2676</a>. For civil legal-aid intake, contact South Carolina Legal Services at <a href="tel:+18883465592">(888) 346-5592</a>.</p>' +
-          '<p class="small">This guide is educational information, not legal advice. Laws, court procedures, agency rules, and program eligibility can change. Confirm details with an attorney, legal aid office, or official agency before acting.</p>' +
-        "</section>" +
-        '<nav class="footer-nav" aria-label="Footer sections">' + footerNav + "</nav>" +
+        '<p class="footer-brand">Heirs’ Property Guide</p>' +
+        '<p>This is an educational resource, not legal advice.</p>' +
+        '<p>Center for Heirs’ Property: <a href="tel:+18437457055">(843) 745-7055</a> / <a href="tel:+18666572676">(866) 657-2676</a></p>' +
+        '<p>South Carolina Legal Services: <a href="tel:+18883465592">(888) 346-5592</a></p>' +
+        '<nav aria-label="Footer links"><ul class="footer-links">' + footerNav + "</ul></nav>" +
+        '<p><a href="#">↑ Back to top</a></p>' +
+        '<p class="footer-meta">© 2026 Heirs’ Property Guide. Educational use only.</p>' +
       "</div>";
   }
 
   var navToggle = document.querySelector("[data-nav-toggle]");
   var primaryNav = document.querySelector("[data-primary-nav]");
-  var mobileQuery = window.matchMedia("(max-width: 899px)");
+  var mobileQuery = window.matchMedia("(max-width: 767px)");
   var sectionToPrint = null;
   var navLinks = primaryNav ? Array.prototype.slice.call(primaryNav.querySelectorAll("a")) : [];
 
@@ -80,7 +46,7 @@
   });
 
   function openNav() {
-    primaryNav.classList.add("is-open");
+    primaryNav.classList.add("nav-open");
     navToggle.setAttribute("aria-expanded", "true");
     var firstLink = primaryNav.querySelector("a");
     if (firstLink) {
@@ -89,7 +55,7 @@
   }
 
   function closeNav() {
-    primaryNav.classList.remove("is-open");
+    primaryNav.classList.remove("nav-open");
     navToggle.setAttribute("aria-expanded", "false");
   }
 
@@ -99,12 +65,11 @@
     }
 
     if (mobileQuery.matches) {
-      primaryNav.classList.add("is-collapsible");
       closeNav();
       return;
     }
 
-    primaryNav.classList.remove("is-collapsible", "is-open");
+    primaryNav.classList.remove("nav-open");
     navToggle.setAttribute("aria-expanded", "false");
   }
 
@@ -112,7 +77,7 @@
     syncNavigationMode();
 
     navToggle.addEventListener("click", function () {
-      var isOpen = primaryNav.classList.contains("is-open");
+      var isOpen = primaryNav.classList.contains("nav-open");
       if (isOpen) {
         closeNav();
         navToggle.focus();
@@ -123,7 +88,7 @@
 
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape") {
-        var shouldReturnFocus = mobileQuery.matches && primaryNav.classList.contains("is-open") && primaryNav.contains(document.activeElement);
+        var shouldReturnFocus = mobileQuery.matches && primaryNav.classList.contains("nav-open") && primaryNav.contains(document.activeElement);
         closeNav();
         if (shouldReturnFocus) {
           navToggle.focus();
@@ -140,7 +105,7 @@
     });
 
     document.addEventListener("click", function (event) {
-      if (!mobileQuery.matches || !primaryNav.classList.contains("is-open")) {
+      if (!mobileQuery.matches || !primaryNav.classList.contains("nav-open")) {
         return;
       }
       if (primaryNav.contains(event.target) || navToggle.contains(event.target)) {
@@ -156,17 +121,31 @@
     }
   }
 
-  if (window.HeirsPropertyStorage) {
-    var currentPage = window.location.pathname.split("/").pop() || "index.html";
-    var returnLink = document.querySelector("[data-return-link]");
-    var lastPage = window.HeirsPropertyStorage.readJson(window.HeirsPropertyStorage.keys.lastPage, "");
-    if (returnLink) {
-      if (lastPage && lastPage !== currentPage) {
-        returnLink.href = lastPage;
-        returnLink.hidden = false;
-      }
-    }
-    window.HeirsPropertyStorage.writeJson(window.HeirsPropertyStorage.keys.lastPage, currentPage);
+  var previousPageMap = {
+    "start-here.html": { href: "index.html", label: "Home" },
+    "what-is-heirs-property.html": { href: "start-here.html", label: "Start here" },
+    "how-families-lose-land.html": { href: "what-is-heirs-property.html", label: "Learn the basics" },
+    "south-carolina-legal-protections.html": { href: "how-families-lose-land.html", label: "How families lose land" },
+    "protecting-preserving-family-land.html": { href: "south-carolina-legal-protections.html", label: "South Carolina legal protections" },
+    "economic-opportunities.html": { href: "protecting-preserving-family-land.html", label: "Protecting family land" },
+    "history-culture-legacy.html": { href: "economic-opportunities.html", label: "Economic opportunities" },
+    "what-to-do-first.html": { href: "what-is-heirs-property.html", label: "Learn the basics" },
+    "resources-get-help.html": { href: "what-to-do-first.html", label: "What to do first" },
+    "printable-guide.html": { href: "resources-get-help.html", label: "Get help" },
+    "notes.html": { href: "printable-guide.html", label: "Printable guide" },
+    "accessibility.html": { href: "about-this-guide.html", label: "About this guide" },
+    "about-this-guide.html": { href: "index.html", label: "Home" },
+    "404.html": { href: "index.html", label: "Home" }
+  };
+
+  var breadcrumbNode = document.querySelector(".breadcrumbs");
+  if (breadcrumbNode && !document.querySelector(".breadcrumb-tools") && previousPageMap[pageKey]) {
+    var toolWrap = document.createElement("div");
+    toolWrap.className = "breadcrumb-tools no-print";
+    toolWrap.innerHTML =
+      '<a class="utility-link" href="' + previousPageMap[pageKey].href + '">← ' + previousPageMap[pageKey].label + "</a>" +
+      '<button class="utility-link utility-button" type="button" data-print>🖨 Print this page</button>';
+    breadcrumbNode.insertAdjacentElement("afterend", toolWrap);
   }
 
   var longPages = {
