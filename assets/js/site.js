@@ -1,19 +1,71 @@
 (function () {
   document.documentElement.classList.add("js");
-  var pageKey = window.location.pathname.split("/").pop() || "index.html";
+  var rawPath = window.location.pathname;
+  var pageKey = rawPath.split("/").pop() || "index.html";
+  var primaryLinks = [
+    { href: "index.html", label: "Home" },
+    { href: "start-here.html", label: "Start here" },
+    { href: "what-is-heirs-property.html", label: "What is heirs’ property?" },
+    { href: "how-families-lose-land.html", label: "How families lose land" },
+    { href: "south-carolina-legal-protections.html", label: "SC legal protections" },
+    { href: "what-to-do-first.html", label: "What to do first" },
+    { href: "resources-get-help.html", label: "Get help" },
+    { href: "protecting-preserving-family-land.html", label: "Protecting family land" },
+    { href: "economic-opportunities.html", label: "Economic opportunities" },
+    { href: "history-culture-legacy.html", label: "History, culture, legacy" },
+    { href: "notes.html", label: "Notes" },
+    { href: "printable-guide.html", label: "Printable guide" },
+    { href: "about-this-guide.html", label: "About" },
+    { href: "accessibility.html", label: "Accessibility" }
+  ];
+  var knownPages = primaryLinks.reduce(function (acc, link) {
+    acc[link.href] = true;
+    return acc;
+  }, {
+    "404.html": true
+  });
+
+  var legacyPathMap = {
+    "how-families-lose-land": "how-families-lose-land.html",
+    "what-is-heirs-property": "what-is-heirs-property.html",
+    "south-carolina-legal-protections": "south-carolina-legal-protections.html",
+    "protecting-preserving-family-land": "protecting-preserving-family-land.html",
+    "economic-opportunities": "economic-opportunities.html",
+    "history-culture-legacy": "history-culture-legacy.html",
+    "what-to-do-first": "what-to-do-first.html",
+    "resources-get-help": "resources-get-help.html",
+    "start-here": "start-here.html",
+    "printable-guide": "printable-guide.html",
+    "about-this-guide": "about-this-guide.html",
+    "accessibility": "accessibility.html",
+    "notes": "notes.html"
+  };
+
+  function maybeRedirectLegacyPath() {
+    var cleanPath = rawPath.replace(/\/+$/, "");
+    var segment = cleanPath.split("/").pop() || "";
+    var target = legacyPathMap[segment];
+
+    if (!target && segment && segment.indexOf(".") === -1) {
+      var extensionCandidate = segment + ".html";
+      if (knownPages[extensionCandidate]) {
+        target = extensionCandidate;
+      }
+    }
+
+    if (!target || target === pageKey) {
+      return;
+    }
+
+    var base = cleanPath.slice(0, cleanPath.length - segment.length);
+    window.location.replace(base + target + window.location.search + window.location.hash);
+  }
+
+  maybeRedirectLegacyPath();
 
   var footer = document.querySelector("[data-shared-footer]");
   if (footer) {
-    var footerLinks = [
-      { href: "index.html", label: "Home" },
-      { href: "start-here.html", label: "Start here" },
-      { href: "what-is-heirs-property.html", label: "Learn the basics" },
-      { href: "what-to-do-first.html", label: "What to do first" },
-      { href: "notes.html", label: "Notes" },
-      { href: "resources-get-help.html", label: "Get help" },
-      { href: "printable-guide.html", label: "Printable guide" }
-    ];
-    var footerNav = footerLinks.map(function (link) {
+    var footerNav = primaryLinks.map(function (link) {
       var current = link.href === pageKey ? ' aria-current="page"' : "";
       return '<li><a href="' + link.href + '"' + current + ">" + link.label + "</a></li>";
     }).join("");
@@ -34,7 +86,18 @@
   var primaryNav = document.querySelector("[data-primary-nav]");
   var mobileQuery = window.matchMedia("(max-width: 767px)");
   var sectionToPrint = null;
-  var navLinks = primaryNav ? Array.prototype.slice.call(primaryNav.querySelectorAll("a")) : [];
+  var navLinks = [];
+
+  if (primaryNav) {
+    var navList = primaryNav.querySelector("ul");
+    if (navList) {
+      navList.innerHTML = primaryLinks.map(function (link) {
+        var current = link.href === pageKey ? ' aria-current="page"' : "";
+        return '<li><a href="' + link.href + '"' + current + ">" + link.label + "</a></li>";
+      }).join("");
+    }
+    navLinks = Array.prototype.slice.call(primaryNav.querySelectorAll("a"));
+  }
 
   navLinks.forEach(function (link) {
     var href = link.getAttribute("href");
