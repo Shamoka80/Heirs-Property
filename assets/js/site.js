@@ -156,19 +156,6 @@
     }
   }
 
-  if (window.HeirsPropertyStorage) {
-    var currentPage = window.location.pathname.split("/").pop() || "index.html";
-    var returnLink = document.querySelector("[data-return-link]");
-    var lastPage = window.HeirsPropertyStorage.readJson(window.HeirsPropertyStorage.keys.lastPage, "");
-    if (returnLink) {
-      if (lastPage && lastPage !== currentPage) {
-        returnLink.href = lastPage;
-        returnLink.hidden = false;
-      }
-    }
-    window.HeirsPropertyStorage.writeJson(window.HeirsPropertyStorage.keys.lastPage, currentPage);
-  }
-
   var longPages = {
     "start-here.html": true,
     "what-is-heirs-property.html": true,
