@@ -2,6 +2,9 @@
   document.documentElement.classList.add("js");
   var pageKey = window.location.pathname.split("/").pop() || "index.html";
   var isHome = pageKey === "index.html";
+  if (!document.body.id) {
+    document.body.id = "top";
+  }
 
   var footer = document.querySelector("[data-shared-footer]");
   if (footer) {
@@ -59,6 +62,7 @@
           "<h2>Need help now?</h2>" +
           '<p>For heirs’ property assistance in South Carolina, contact the Center for Heirs’ Property at <a href="tel:+18437457055">(843) 745-7055</a> or toll-free at <a href="tel:+18666572676">(866) 657-2676</a>. For civil legal-aid intake, contact South Carolina Legal Services at <a href="tel:+18883465592">(888) 346-5592</a>.</p>' +
           '<p class="small">This guide is educational information, not legal advice. Laws, court procedures, agency rules, and program eligibility can change. Confirm details with an attorney, legal aid office, or official agency before acting.</p>' +
+          '<p class="small"><a href="#top">↑ Back to top</a> · © 2026 Heirs’ Property Guide. Educational use only.</p>' +
         "</section>" +
         '<nav class="footer-nav" aria-label="Footer sections">' + footerNav + "</nav>" +
       "</div>";
@@ -66,6 +70,7 @@
 
   var navToggle = document.querySelector("[data-nav-toggle]");
   var primaryNav = document.querySelector("[data-primary-nav]");
+  var headerActions = document.querySelector(".header-actions");
   var mobileQuery = window.matchMedia("(max-width: 899px)");
   var sectionToPrint = null;
   var navLinks = primaryNav ? Array.prototype.slice.call(primaryNav.querySelectorAll("a")) : [];
@@ -154,6 +159,82 @@
     } else if (typeof mobileQuery.addListener === "function") {
       mobileQuery.addListener(syncNavigationMode);
     }
+  }
+
+  var searchIndex = [
+    { href: "start-here.html", title: "Start here", text: "Urgent first steps, avoid rushed signatures, gather key records." },
+    { href: "what-is-heirs-property.html", title: "What is heirs’ property?", text: "Definition, key terms, title, deed, probate, shared ownership." },
+    { href: "how-families-lose-land.html", title: "How families lose land", text: "Common risk pathways, pressure sales, tax and court risks." },
+    { href: "south-carolina-legal-protections.html", title: "South Carolina legal protections", text: "SC protections, partition process context, legal safeguards." },
+    { href: "what-to-do-first.html", title: "What to do first", text: "Day, week, month checklist and practical action plan." },
+    { href: "protecting-preserving-family-land.html", title: "Protecting family land", text: "Preservation strategy options and decision framework." },
+    { href: "economic-opportunities.html", title: "Economic opportunities", text: "Income and stewardship options, long-term planning." },
+    { href: "history-culture-legacy.html", title: "History, culture, and legacy", text: "Family context, legacy and long-term goals." },
+    { href: "resources-get-help.html", title: "Get help", text: "Support contacts, legal aid, call preparation and resources." },
+    { href: "printable-guide.html", title: "Printable guide", text: "Print-friendly guide for meetings and appointments." },
+    { href: "notes.html", title: "Notes", text: "Private local notes, save and export details." },
+    { href: "accessibility.html", title: "Accessibility", text: "Accessibility features and accommodations." },
+    { href: "about-this-guide.html", title: "About this guide", text: "Purpose, educational scope and usage." }
+  ];
+
+  var searchButton = null;
+  var searchDialog = null;
+  var searchField = null;
+  var searchResults = null;
+  function renderSearchResults(query) {
+    if (!searchResults) return;
+    var term = (query || "").trim().toLowerCase();
+    if (!term) {
+      searchResults.innerHTML = '<p class="small">Type a word like “tax”, “probate”, or “partition”.</p>';
+      return;
+    }
+    var matches = searchIndex.filter(function (item) {
+      return (item.title + " " + item.text).toLowerCase().indexOf(term) !== -1;
+    }).slice(0, 8);
+    if (!matches.length) {
+      searchResults.innerHTML = '<p class="small">No matches found. Try a broader keyword.</p>';
+      return;
+    }
+    searchResults.innerHTML = '<ul class="link-list">' + matches.map(function (item) {
+      return '<li><a href="' + item.href + '"><strong>' + item.title + "</strong><br>" + item.text + "</a></li>";
+    }).join("") + "</ul>";
+  }
+  function closeSearchDialog() {
+    if (!searchDialog) return;
+    searchDialog.hidden = true;
+    if (searchButton) searchButton.focus();
+  }
+  if (headerActions) {
+    searchButton = document.createElement("button");
+    searchButton.type = "button";
+    searchButton.className = "top-link";
+    searchButton.setAttribute("data-search-toggle", "");
+    searchButton.textContent = "Search";
+    headerActions.insertBefore(searchButton, headerActions.firstChild);
+
+    searchDialog = document.createElement("section");
+    searchDialog.className = "search-modal no-print";
+    searchDialog.hidden = true;
+    searchDialog.innerHTML = '<div class="search-panel"><div class="search-panel-head"><h2>Search this guide</h2><button type="button" class="button-tertiary" data-search-close>Close</button></div><label for="site-search">Find a page or topic</label><input id="site-search" type="text" autocomplete="off" placeholder="Try: tax notice, probate, partition, deed"><div data-search-results><p class="small">Type a word like “tax”, “probate”, or “partition”.</p></div></div>';
+    document.body.appendChild(searchDialog);
+
+    searchField = searchDialog.querySelector("#site-search");
+    searchResults = searchDialog.querySelector("[data-search-results]");
+    searchDialog.querySelector("[data-search-close]").addEventListener("click", closeSearchDialog);
+    searchButton.addEventListener("click", function () {
+      searchDialog.hidden = false;
+      searchField.value = "";
+      renderSearchResults("");
+      searchField.focus();
+    });
+    searchField.addEventListener("input", function (event) {
+      renderSearchResults(event.target.value);
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && searchDialog && !searchDialog.hidden) {
+        closeSearchDialog();
+      }
+    });
   }
 
   var longPages = {
