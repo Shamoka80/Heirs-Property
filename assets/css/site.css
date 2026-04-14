@@ -79,17 +79,13 @@ select:focus-visible {
 .header-inner { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1rem; padding: .7rem 0; }
 .brand { display: inline-flex; align-items: center; gap: .75rem; color: var(--primary); text-decoration: none; font-weight: 700; }
 .brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 2.2rem;
-  min-height: 2.2rem;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent-ink);
-  font-family: var(--font-serif);
-  font-weight: 700;
+  display: block;
+  width: calc(2.2rem * 1.05);
+  height: calc(2.2rem * 1.05);
+  border-radius: 0;
+  object-fit: contain;
   border: 1px solid var(--line-strong);
+  background: transparent;
 }
 .brand-text { letter-spacing: .01em; }
 .header-actions { margin-left: auto; display: flex; align-items: center; gap: .75rem; }
@@ -670,7 +666,7 @@ textarea { min-height: 8rem; resize: vertical; }
 
 @media (max-width: 390px) {
   html { font-size: 16px; }
-  .brand-mark { min-width: 2rem; min-height: 2rem; }
+  .brand-mark { width: calc(2rem * 1.05); height: calc(2rem * 1.05); }
   .kicker { letter-spacing: .08em; }
   .page-wrap { padding-top: 1.6rem; }
 }
