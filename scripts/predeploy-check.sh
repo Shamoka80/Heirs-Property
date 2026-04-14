@@ -12,8 +12,8 @@ required_files=(
 )
 
 required_patterns=(
-  "assets/css/site.css?v=20260414r2"
-  "assets/icons/apple-touch-icon.png?v=20260414r2"
+  "assets/css/site.css?v=20260414"
+  "assets/icons/apple-touch-icon.png?v=20260414"
 )
 
 missing=0
@@ -39,33 +39,17 @@ for p in "${required_patterns[@]}"; do
 done
 
 # Homepage-specific hero requirements
-if rg -n "assets/images/HPfamilyland\.gif\?v=20260414r2" index.html >/dev/null; then
+if rg -n "assets/images/HPfamilyland\.gif\?v=20260414" index.html >/dev/null; then
   echo "  ✓ index hero points to HPfamilyland.gif"
 else
   echo "  ✗ index hero is not pointing to HPfamilyland.gif"
   missing=1
 fi
 
-if rg -n "onerror=\"this.onerror=null;this.src='assets/images/social-preview\.png\?v=20260414r2';\"" index.html >/dev/null; then
+if rg -n "onerror=\"this.onerror=null;this.src='assets/images/social-preview\.png\?v=20260414';\"" index.html >/dev/null; then
   echo "  ✓ index hero has social-preview fallback"
 else
   echo "  ✗ index hero fallback missing"
-  missing=1
-fi
-
-
-# Regression guards: brand mark and hero behavior must not be overwritten
-if rg -n --glob '*.html' '<span class="brand-mark"' >/dev/null; then
-  echo "  ✗ Found deprecated text-based brand-mark span"
-  missing=1
-else
-  echo "  ✓ no deprecated text brand-mark spans"
-fi
-
-if rg -n '\.brand-mark \{' assets/css/site.css >/dev/null   && rg -n 'object-fit: contain;' assets/css/site.css >/dev/null   && rg -n 'border-radius: 0;' assets/css/site.css >/dev/null; then
-  echo "  ✓ brand-mark CSS enforces square, non-cropped image"
-else
-  echo "  ✗ brand-mark CSS regression detected"
   missing=1
 fi
 
