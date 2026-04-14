@@ -83,9 +83,9 @@ select:focus-visible {
   width: 2.2rem;
   height: 2.2rem;
   border-radius: 999px;
-  object-fit: cover;
+  object-fit: contain;
   border: 1px solid var(--line-strong);
-  background: var(--accent-soft);
+  background: transparent;
 }
 .brand-text { letter-spacing: .01em; }
 .header-actions { margin-left: auto; display: flex; align-items: center; gap: .75rem; }
