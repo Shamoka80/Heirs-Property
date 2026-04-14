@@ -80,9 +80,9 @@ select:focus-visible {
 .brand { display: inline-flex; align-items: center; gap: .75rem; color: var(--primary); text-decoration: none; font-weight: 700; }
 .brand-mark {
   display: block;
-  width: calc(2.2rem * 1.05);
-  height: calc(2.2rem * 1.05);
-  border-radius: 0;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 999px;
   object-fit: contain;
   border: 1px solid var(--line-strong);
   background: transparent;
@@ -666,7 +666,7 @@ textarea { min-height: 8rem; resize: vertical; }
 
 @media (max-width: 390px) {
   html { font-size: 16px; }
-  .brand-mark { width: calc(2rem * 1.05); height: calc(2rem * 1.05); }
+  .brand-mark { width: 2rem; height: 2rem; }
   .kicker { letter-spacing: .08em; }
   .page-wrap { padding-top: 1.6rem; }
 }
