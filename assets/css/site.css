@@ -49,11 +49,26 @@
 html { font-size: 18px; }
 body {
   margin: 0;
+  position: relative;
+  min-height: 100vh;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
   line-height: 1.72;
   overflow-x: hidden;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url('../images/hero-banner.png') center top / cover no-repeat;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 0;
+}
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 img { max-width: 100%; height: auto; border-radius: 12px; }
@@ -751,6 +766,10 @@ textarea { min-height: 8rem; resize: vertical; }
     --danger: #d16464;
     --danger-bg: #3b2625;
     --success-bg: #243229;
+  }
+  body::before {
+    opacity: 0.25;
+    filter: brightness(0.45) saturate(0.75);
   }
   .skip-link { background: var(--secondary); color: #fff; }
   .card-urgent { background: #382821; }
