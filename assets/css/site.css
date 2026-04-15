@@ -71,6 +71,31 @@ body > * {
   z-index: 1;
 }
 
+.page-head,
+.page-head-inner,
+.page-main {
+  position: relative;
+}
+
+.parallax-layer,
+.parallax-bg,
+.parallax-foreground,
+.parallax-data,
+.parallax-info {
+  --parallax-offset: 0px;
+  transform: translate3d(0, var(--parallax-offset), 0);
+  backface-visibility: hidden;
+}
+
+.parallax-bg { z-index: 1; }
+.parallax-data { z-index: 2; }
+.parallax-info { z-index: 3; }
+.parallax-foreground { z-index: 4; }
+
+.parallax-active {
+  will-change: transform;
+}
+
 img { max-width: 100%; height: auto; border-radius: 12px; }
 main, section, article, p, li, h1, h2, h3, h4, a { overflow-wrap: anywhere; }
 a { color: var(--link); text-underline-offset: 0.18em; }
@@ -160,8 +185,12 @@ select:focus-visible {
   background: linear-gradient(165deg, color-mix(in srgb, var(--primary) 14%, #fff 86%), color-mix(in srgb, var(--accent-soft) 44%, #fff 56%));
   color: var(--text);
   border-bottom: 1px solid var(--line);
+  z-index: 2;
 }
-.page-head-inner { padding: 3rem 0 2.7rem; }
+.page-head-inner {
+  padding: 3rem 0 2.7rem;
+  z-index: 3;
+}
 .kicker {
   margin: 0;
   color: var(--muted);
@@ -265,6 +294,11 @@ select:focus-visible {
 .layout { display: grid; gap: 2rem; }
 .layout.with-aside { grid-template-columns: minmax(0,1fr); }
 main article,.page-main { max-width: var(--content); }
+main article,
+.page-main {
+  position: relative;
+  z-index: 4;
+}
 aside { align-self: start; }
 .sticky-box { position: sticky; top: 6.25rem; }
 .section { margin-top: var(--space-section); }
@@ -739,6 +773,14 @@ textarea { min-height: 8rem; resize: vertical; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *,*::before,*::after { animation: none !important; transition: none !important; }
+  .parallax-layer,
+  .parallax-bg,
+  .parallax-foreground,
+  .parallax-data,
+  .parallax-info {
+    transform: none !important;
+    will-change: auto !important;
+  }
 }
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }

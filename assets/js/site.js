@@ -161,6 +161,113 @@
     }
   }
 
+  function setupParallax() {
+    if (!window.requestAnimationFrame || !window.matchMedia) {
+      return;
+    }
+
+    var reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var layerConfig = [
+      { selector: ".page-head", className: "parallax-bg", speed: 0.1 },
+      { selector: ".page-head-inner", className: "parallax-data", speed: 0.06 },
+      { selector: ".page-main", className: "parallax-foreground", speed: 0.03 }
+    ];
+    var parallaxLayers = [];
+    var frameRequested = false;
+    var deactivateTimer = null;
+    var maxOffset = 120;
+
+    function clearParallaxTransforms() {
+      parallaxLayers.forEach(function (layer) {
+        layer.node.style.setProperty("--parallax-offset", "0px");
+        layer.node.classList.remove("parallax-active");
+      });
+    }
+
+    function setParallaxActiveState(isActive) {
+      parallaxLayers.forEach(function (layer) {
+        layer.node.classList.toggle("parallax-active", isActive);
+      });
+    }
+
+    function renderFrame() {
+      frameRequested = false;
+      if (reduceMotionQuery.matches || !parallaxLayers.length) {
+        return;
+      }
+
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+      var viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+      var safeRange = viewportHeight ? viewportHeight * 0.5 : maxOffset;
+      var clampLimit = Math.max(maxOffset, safeRange);
+
+      parallaxLayers.forEach(function (layer) {
+        var offset = Math.max(-clampLimit, Math.min(clampLimit, scrollTop * layer.speed));
+        layer.node.style.setProperty("--parallax-offset", (offset * -1).toFixed(2) + "px");
+      });
+    }
+
+    function requestRender() {
+      if (!frameRequested) {
+        frameRequested = true;
+        window.requestAnimationFrame(renderFrame);
+      }
+    }
+
+    function handleScroll() {
+      if (reduceMotionQuery.matches || !parallaxLayers.length) {
+        return;
+      }
+      if (deactivateTimer) {
+        window.clearTimeout(deactivateTimer);
+      }
+      setParallaxActiveState(true);
+      deactivateTimer = window.setTimeout(function () {
+        setParallaxActiveState(false);
+      }, 180);
+      requestRender();
+    }
+
+    layerConfig.forEach(function (config) {
+      Array.prototype.forEach.call(document.querySelectorAll(config.selector), function (node) {
+        node.classList.add("parallax-layer", config.className);
+        node.setAttribute("data-parallax-speed", String(config.speed));
+        parallaxLayers.push({
+          node: node,
+          speed: config.speed
+        });
+      });
+    });
+
+    if (!parallaxLayers.length) {
+      return;
+    }
+
+    function syncReducedMotionMode() {
+      if (reduceMotionQuery.matches) {
+        if (deactivateTimer) {
+          window.clearTimeout(deactivateTimer);
+          deactivateTimer = null;
+        }
+        clearParallaxTransforms();
+        return;
+      }
+      requestRender();
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", requestRender);
+    syncReducedMotionMode();
+
+    if (typeof reduceMotionQuery.addEventListener === "function") {
+      reduceMotionQuery.addEventListener("change", syncReducedMotionMode);
+    } else if (typeof reduceMotionQuery.addListener === "function") {
+      reduceMotionQuery.addListener(syncReducedMotionMode);
+    }
+  }
+
+  setupParallax();
+
   var searchIndex = [
     { href: "start-here.html", title: "Start here", text: "Urgent first steps, avoid rushed signatures, gather key records." },
     { href: "what-is-heirs-property.html", title: "What is heirs’ property?", text: "Definition, key terms, title, deed, probate, shared ownership." },
