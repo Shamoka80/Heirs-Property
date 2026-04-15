@@ -822,10 +822,6 @@ textarea { min-height: 8rem; resize: vertical; }
   input[type="text"],
   input[type="date"],
   textarea { background: #22201b; }
-  .mode-urgent .page-head { background: linear-gradient(160deg, #332523, #2b211f); }
-  .mode-action .page-head { background: linear-gradient(165deg, #222a35, #1f2732); }
-  .mode-workspace .page-head { background: linear-gradient(165deg, #26263a, #222433); }
-  .mode-dashboard .page-head { background: linear-gradient(165deg, #1f2932, #2a241b); }
 }
 
 .mode-urgent .page-head { background: linear-gradient(160deg, #fbf4f4, #f4e6e6); }
