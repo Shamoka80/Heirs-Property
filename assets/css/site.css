@@ -62,7 +62,7 @@ body::before {
   position: fixed;
   inset: 0;
   background: url('../images/hero-banner.png') center top / cover no-repeat;
-  opacity: 0.25;
+  opacity: 0.20;
   pointer-events: none;
   z-index: 0;
 }
@@ -768,7 +768,7 @@ textarea { min-height: 8rem; resize: vertical; }
     --success-bg: #243229;
   }
   body::before {
-    opacity: 0.25;
+    opacity: 0.20;
     filter: brightness(0.45) saturate(0.75);
   }
   .skip-link { background: var(--secondary); color: #fff; }
