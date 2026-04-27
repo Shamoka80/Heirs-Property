@@ -6,11 +6,15 @@ Establish a repeatable QA artifact workflow for responsive layout acceptance acr
 ## Required viewport set
 Run every check at these viewport widths (CSS px):
 
-- **1440** (large desktop)
-- **1024** (small desktop / landscape tablet)
-- **768** (tablet portrait)
-- **430** (large mobile)
+- **375** (small mobile)
 - **390** (mobile baseline)
+- **480** (large mobile)
+- **700** (small tablet / large mobile landscape)
+- **899** (tablet/desktop breakpoint edge below)
+- **900** (tablet/desktop breakpoint edge above)
+- **1024** (small desktop / landscape tablet)
+- **1280** (desktop baseline)
+- **1440** (large desktop)
 
 Use full-height browser windows so first-screen observations are accurate.
 
@@ -46,14 +50,25 @@ For each page and each required viewport, verify all checks below.
 
 ### 1) Hero height and first-screen balance
 **Pass if all are true:**
+- `.home-hero .page-head-inner` does **not** show an internal scrollbar.
 - Hero section does **not** dominate the first viewport (target: hero consumes no more than ~65% of first viewport height before meaningful body content appears).
 - Within first screen, users can see at least one meaningful non-hero content cue (e.g., intro paragraph, section heading, or primary next-step content).
 - No clipped headline/subhead text in hero area.
 
 **Fail if any are true:**
+- Internal hero scrollbar appears in `.home-hero .page-head-inner`.
 - Hero visually fills nearly the full first viewport with no downstream content cue visible.
 - Hero media/text overlaps, clips, or causes horizontal scrolling.
 - First screen appears unbalanced (e.g., excessive top padding or dead space pushing content below fold).
+
+### 1b) Horizontal overflow guard
+**Pass if all are true:**
+- No horizontal document scrollbar appears on tested viewports.
+- Hero image, panel cards, and CTA group fit within viewport without clipping.
+
+**Fail if any are true:**
+- Any page-level horizontal scrollbar appears at a required viewport.
+- Hero content extends beyond viewport width.
 
 ### 2) CTA/button sizing and alignment
 **Pass if all are true:**
@@ -84,8 +99,9 @@ For each page and each required viewport, verify all checks below.
 2. Open each in-scope page.
 3. For each required viewport, capture screenshots for:
    - hero/first-screen balance,
+   - hero nested-scroll + horizontal-overflow confirmation,
    - CTA/button sizing/alignment,
-   - mobile tap targets (required at 430 and 390).
+   - mobile tap targets (required at 480, 390, and 375).
 4. Record result per check as **Pass** or **Fail** in the run log.
 5. For every **Fail**, include:
    - screenshot filename,

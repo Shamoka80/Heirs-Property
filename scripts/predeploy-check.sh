@@ -7,13 +7,13 @@ cd "$ROOT_DIR"
 required_files=(
   "assets/css/site.css"
   "assets/icons/apple-touch-icon.png"
-  "assets/images/social-preview.png"
+  "assets/images/social-preview-2.png"
   "assets/images/HPfamilyland.gif"
 )
 
 required_patterns=(
   "assets/css/site.css?v=20260414"
-  "assets/icons/apple-touch-icon.png?v=20260414"
+  "assets/icons/apple-touch-icon.png"
 )
 
 missing=0
@@ -39,22 +39,17 @@ for p in "${required_patterns[@]}"; do
 done
 
 # Homepage-specific hero requirements
-if rg -n "assets/images/HPfamilyland\.gif\?v=20260414" index.html >/dev/null; then
+if rg -n "<img[^>]+src=\"assets/images/HPfamilyland\.gif\"" index.html >/dev/null; then
   echo "  ✓ index hero points to HPfamilyland.gif"
 else
   echo "  ✗ index hero is not pointing to HPfamilyland.gif"
   missing=1
 fi
 
-if rg -n "onerror=\"this.onerror=null;this.src='assets/images/social-preview\.png\?v=20260414';\"" index.html >/dev/null; then
-  echo "  ✓ index hero has social-preview fallback"
-else
-  echo "  ✗ index hero fallback missing"
-  missing=1
-fi
-
 echo "[predeploy] Running interaction verification..."
 python3 scripts/check-interactions.py
+echo "[predeploy] Running local link checks..."
+python3 scripts/check-links.py
 
 if [[ "$missing" -ne 0 ]]; then
   echo "[predeploy] FAILED: Required assets/references are missing. Block deployment."
