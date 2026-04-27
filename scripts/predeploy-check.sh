@@ -53,6 +53,9 @@ else
   missing=1
 fi
 
+echo "[predeploy] Running interaction verification..."
+python3 scripts/check-interactions.py
+
 if [[ "$missing" -ne 0 ]]; then
   echo "[predeploy] FAILED: Required assets/references are missing. Block deployment."
   exit 1
