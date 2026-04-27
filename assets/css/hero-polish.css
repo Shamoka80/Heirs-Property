@@ -1,0 +1,97 @@
+/* Homepage hero regression fix and professional visual polish.
+   Loaded after site.css to override the scroll-inducing hero cap without disturbing print styles. */
+
+:root {
+  --btn-height: 42px;
+  --btn-pad-x: .88rem;
+  --btn-font-size: .9rem;
+  --btn-group-gap: .55rem;
+  --btn-group-margin-top: .9rem;
+  --img-scale-desktop: 1;
+  --content-image-scale-desktop: 1;
+}
+
+.home-hero .page-head-inner {
+  max-block-size: none;
+  overflow: visible;
+  padding-block: clamp(1.25rem, 2.2vw, 2.15rem) clamp(1.15rem, 2vw, 1.95rem);
+}
+
+.home-hero .hero-layout {
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 2rem);
+}
+
+.home-hero .page-head h1 {
+  font-size: clamp(2rem, 3.25vw, 2.85rem);
+  max-width: 22ch;
+}
+
+.home-hero .lead {
+  font-size: clamp(1rem, 1.15vw, 1.06rem);
+  line-height: 1.54;
+}
+
+.home-hero .hero-actions {
+  align-items: center;
+}
+
+.home-hero .hero-actions .button,
+.home-hero .hero-actions .button-secondary,
+.home-hero .hero-actions .button-tertiary {
+  min-height: 42px;
+  padding-inline: .88rem;
+}
+
+.home-hero .hero-panel {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: .7rem;
+  margin-top: .9rem;
+}
+
+.home-hero .hero-panel-item {
+  padding: .75rem .85rem;
+  font-size: .93rem;
+  line-height: 1.48;
+}
+
+.home-hero .hero-visual {
+  padding: .65rem;
+}
+
+.home-hero .hero-visual img {
+  width: 100%;
+}
+
+.home-hero .hero-visual figcaption {
+  margin-top: .55rem;
+  font-size: .82rem;
+  line-height: 1.42;
+}
+
+@media (min-width: 900px) {
+  .home-hero .hero-layout {
+    grid-template-columns: minmax(0, 1.08fr) minmax(300px, .92fr);
+  }
+
+  .home-hero .hero-visual {
+    max-width: 500px;
+    justify-self: end;
+  }
+}
+
+@media (max-width: 699px) {
+  .home-hero .page-head-inner {
+    padding-block: 1rem 1.1rem;
+  }
+
+  .home-hero .page-head h1 {
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
+  }
+
+  .home-hero .hero-actions .button,
+  .home-hero .hero-actions .button-secondary,
+  .home-hero .hero-actions .button-tertiary {
+    width: 100%;
+  }
+}
