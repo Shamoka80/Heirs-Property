@@ -166,6 +166,25 @@ select:focus-visible {
   border: 1px solid transparent;
 }
 .top-link { background: var(--accent-soft); color: var(--accent-ink); }
+.top-link:hover {
+  background: color-mix(in srgb, var(--accent-soft) 78%, var(--accent) 22%);
+  color: var(--accent-ink);
+}
+.top-link:active {
+  background: color-mix(in srgb, var(--accent-soft) 62%, var(--accent) 38%);
+}
+.top-link:focus-visible,.button:focus-visible,.button-secondary:focus-visible,.button-tertiary:focus-visible,.print-link:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 2px var(--surface);
+}
+.top-link:is([disabled],.is-disabled),.button:is([disabled],.is-disabled),.button-secondary:is([disabled],.is-disabled),.button-tertiary:is([disabled],.is-disabled),.print-link:is([disabled],.is-disabled) {
+  opacity: .56;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  text-decoration: none;
+}
 .nav-toggle {
   display: none;
   min-height: var(--target);
@@ -307,6 +326,7 @@ select:focus-visible {
   box-shadow: 0 4px 12px rgba(31, 58, 95, .18);
 }
 .button:hover { background: #8F4110; }
+.button:active { background: #74360E; }
 .button-secondary {
   background: color-mix(in srgb, var(--surface) 80%, var(--accent-soft) 20%);
   border-color: var(--primary);
@@ -316,6 +336,10 @@ select:focus-visible {
   background: color-mix(in srgb, var(--surface) 66%, var(--accent-soft) 34%);
   border-color: var(--link-hover);
 }
+.button-secondary:active {
+  background: color-mix(in srgb, var(--surface) 52%, var(--accent-soft) 48%);
+  border-color: var(--link-hover);
+}
 .button-tertiary,.print-link {
   background: transparent;
   color: var(--primary);
@@ -323,6 +347,9 @@ select:focus-visible {
 }
 .button-tertiary:hover {
   background: color-mix(in srgb, var(--accent-soft) 38%, var(--surface) 62%);
+}
+.button-tertiary:active {
+  background: color-mix(in srgb, var(--accent-soft) 54%, var(--surface) 46%);
 }
 .print-link {
   min-height: 0;
@@ -334,6 +361,8 @@ select:focus-visible {
   text-decoration: underline;
   text-underline-offset: .18em;
 }
+.print-link:hover { color: var(--link-hover); }
+.print-link:active { color: color-mix(in srgb, var(--link-hover) 82%, #000 18%); }
 
 .page-wrap { padding: 2.6rem 0 4.2rem; }
 .breadcrumbs { margin-bottom: 1rem; }
@@ -895,6 +924,40 @@ textarea { min-height: 8rem; resize: vertical; }
     filter: brightness(0.45) saturate(0.75);
   }
   .skip-link { background: var(--secondary); color: #fff; }
+  .top-link:hover {
+    background: color-mix(in srgb, var(--accent-soft) 68%, var(--accent) 32%);
+    color: var(--accent-ink);
+  }
+  .top-link:active {
+    background: color-mix(in srgb, var(--accent-soft) 52%, var(--accent) 48%);
+  }
+  .button:hover { background: #bc5f2f; }
+  .button:active { background: #a14d22; }
+  .button-secondary {
+    background: color-mix(in srgb, var(--surface) 72%, var(--accent-soft) 28%);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  .button-secondary:hover {
+    background: color-mix(in srgb, var(--surface) 58%, var(--accent-soft) 42%);
+    border-color: var(--link-hover);
+  }
+  .button-secondary:active {
+    background: color-mix(in srgb, var(--surface) 46%, var(--accent-soft) 54%);
+    border-color: var(--link-hover);
+  }
+  .button-tertiary,.print-link {
+    border-color: var(--line-strong);
+    color: var(--primary);
+  }
+  .button-tertiary:hover {
+    background: color-mix(in srgb, var(--accent-soft) 62%, var(--surface) 38%);
+  }
+  .button-tertiary:active {
+    background: color-mix(in srgb, var(--accent-soft) 76%, var(--surface) 24%);
+  }
+  .print-link:hover { color: var(--link-hover); }
+  .print-link:active { color: #fff3de; }
   .card-urgent { background: #382821; }
   .card-utility { background: #203025; }
   .checklist li,

@@ -288,6 +288,10 @@
   var searchDialog = null;
   var searchField = null;
   var searchResults = null;
+  var controlClasses = {
+    topLink: "top-link",
+    tertiary: "button-tertiary"
+  };
   function renderSearchResults(query) {
     if (!searchResults) return;
     var term = (query || "").trim().toLowerCase();
@@ -314,7 +318,7 @@
   if (headerActions) {
     searchButton = document.createElement("button");
     searchButton.type = "button";
-    searchButton.className = "top-link";
+    searchButton.className = controlClasses.topLink;
     searchButton.setAttribute("data-search-toggle", "");
     searchButton.textContent = "Search";
     headerActions.insertBefore(searchButton, headerActions.firstChild);
@@ -322,12 +326,14 @@
     searchDialog = document.createElement("section");
     searchDialog.className = "search-modal no-print";
     searchDialog.hidden = true;
-    searchDialog.innerHTML = '<div class="search-panel"><div class="search-panel-head"><h2>Search this guide</h2><button type="button" class="button-tertiary" data-search-close>Close</button></div><label for="site-search">Find a page or topic</label><input id="site-search" type="text" autocomplete="off" placeholder="Try: tax notice, probate, partition, deed"><div data-search-results><p class="small">Type a word like “tax”, “probate”, or “partition”.</p></div></div>';
+    searchDialog.innerHTML = '<div class="search-panel"><div class="search-panel-head"><h2>Search this guide</h2><button type="button" data-search-close>Close</button></div><label for="site-search">Find a page or topic</label><input id="site-search" type="text" autocomplete="off" placeholder="Try: tax notice, probate, partition, deed"><div data-search-results><p class="small">Type a word like “tax”, “probate”, or “partition”.</p></div></div>';
     document.body.appendChild(searchDialog);
 
     searchField = searchDialog.querySelector("#site-search");
     searchResults = searchDialog.querySelector("[data-search-results]");
-    searchDialog.querySelector("[data-search-close]").addEventListener("click", closeSearchDialog);
+    var searchCloseButton = searchDialog.querySelector("[data-search-close]");
+    searchCloseButton.className = controlClasses.tertiary;
+    searchCloseButton.addEventListener("click", closeSearchDialog);
     searchButton.addEventListener("click", function () {
       searchDialog.hidden = false;
       searchField.value = "";
@@ -404,13 +410,13 @@
       var tools = document.createElement("div");
       tools.className = "section-tools no-print";
       var printButton = document.createElement("button");
-      printButton.className = "button-tertiary";
+      printButton.className = controlClasses.tertiary;
       printButton.type = "button";
       printButton.setAttribute("data-print-section", "");
       printButton.textContent = "Print this section";
 
       var saveLink = document.createElement("a");
-      saveLink.className = "button-tertiary";
+      saveLink.className = controlClasses.tertiary;
       saveLink.href = "notes.html";
       saveLink.textContent = "Save notes for this section";
 
