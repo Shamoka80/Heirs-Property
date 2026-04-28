@@ -38,7 +38,7 @@
   --page-masthead-pad-y: clamp(.95rem, 1.8vw, 1.45rem);
   --utility-masthead-title-size: clamp(1.35rem, 1.85vw, 1.82rem);
   --utility-masthead-pad-y: clamp(.78rem, 1.35vw, 1.08rem);
-  --hero-image-max-width: 420px;
+  --hero-image-max-width: 483px;
   --hero-pad-y-desktop: 2.1rem;
   --hero-pad-y-tablet: 2.1rem;
   --hero-pad-y-mobile: 1.5rem;
@@ -876,6 +876,14 @@ textarea { min-height: 8rem; resize: vertical; }
   .page-head h1 { font-size: clamp(1.35rem, 6.2vw, 1.9rem); line-height: 1.12; margin: .4rem 0 .42rem; max-width: 24ch; }
   .page-head .lead { font-size: .95rem; line-height: 1.42; }
   .hero-layout { gap: .75rem; }
+  .home-hero .hero-layout { display: grid; }
+  .home-hero .hero-content { display: contents; }
+  .home-hero .hero-content > .kicker { order: 1; }
+  .home-hero .hero-content > h1 { order: 2; }
+  .home-hero .hero-content > .lead { order: 3; }
+  .home-hero .hero-visual { order: 4; margin-top: .2rem; }
+  .home-hero .hero-content > .hero-actions { order: 5; }
+  .home-hero .hero-content > .hero-panel { order: 6; }
   .hero-actions { margin-top: .75rem; gap: var(--btn-group-gap); }
   .hero-panel { gap: .45rem .7rem; margin-top: .65rem; padding: .45rem .6rem; }
   .resource-panel,.decision-card,.timeline-step,.card,.site-map-card,.stat-card { padding: .95rem; }
@@ -1057,6 +1065,7 @@ textarea { min-height: 8rem; resize: vertical; }
 .mode-action .page-head { background: linear-gradient(165deg, #eff4fb, #eef0f8); }
 .mode-workspace .page-head { background: linear-gradient(165deg, #f1f2fc, #eceef8); }
 .mode-dashboard .page-head { background: linear-gradient(165deg, #eef4fa, #f6f1e7); }
+.mode-dashboard { --brand-mark-base-size: 2.75rem; }
 
 .split-compare { display:grid; gap:1rem; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); }
 .do-box { border-left:6px solid #1e6f43; background:#f1faf4; }
@@ -1068,4 +1077,3 @@ textarea { min-height: 8rem; resize: vertical; }
 .workspace-note { background:#eef1ff; border-left:5px solid #4054a5; }
 .action-group { margin-top:1rem; border:1px dashed var(--line-strong); border-radius: var(--radius); padding:1rem; }
 .danger-button { border-color:#d7a7a7; color:#6b1717; }
-  .home-hero .hero-visual { display: none; }
