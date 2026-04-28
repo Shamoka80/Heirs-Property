@@ -266,6 +266,28 @@
     }
   }
 
+  function relocateMastheadTools() {
+    var mastheadTools = document.querySelector(".page-head:not(.home-hero) .on-page-tools");
+    var utilityRow = document.querySelector(".page-utilities");
+    if (!mastheadTools || !utilityRow) {
+      return;
+    }
+
+    var links = Array.prototype.slice.call(mastheadTools.querySelectorAll("a[href]"));
+    if (!links.length) {
+      return;
+    }
+
+    var quickTools = document.createElement("div");
+    quickTools.className = "utility-row page-quick-tools no-print";
+    links.forEach(function (link) {
+      quickTools.appendChild(link.cloneNode(true));
+    });
+    utilityRow.appendChild(quickTools);
+    mastheadTools.setAttribute("hidden", "");
+  }
+
+  relocateMastheadTools();
   setupParallax();
 
   var searchIndex = [
