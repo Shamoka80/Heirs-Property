@@ -38,7 +38,7 @@
   --page-masthead-pad-y: clamp(.95rem, 1.8vw, 1.45rem);
   --utility-masthead-title-size: clamp(1.35rem, 1.85vw, 1.82rem);
   --utility-masthead-pad-y: clamp(.78rem, 1.35vw, 1.08rem);
-  --hero-image-max-width: 420px;
+  --hero-image-max-width: 462px;
   --hero-pad-y-desktop: 2.1rem;
   --hero-pad-y-tablet: 2.1rem;
   --hero-pad-y-mobile: 1.5rem;
@@ -1068,4 +1068,3 @@ textarea { min-height: 8rem; resize: vertical; }
 .workspace-note { background:#eef1ff; border-left:5px solid #4054a5; }
 .action-group { margin-top:1rem; border:1px dashed var(--line-strong); border-radius: var(--radius); padding:1rem; }
 .danger-button { border-color:#d7a7a7; color:#6b1717; }
-  .home-hero .hero-visual { display: none; }
