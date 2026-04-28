@@ -27,6 +27,19 @@ BUTTON_DATA_ATTRS = [
     "data-search-close",
 ]
 RUNTIME_INJECTED_ONLY = {"data-print-section", "data-search-close"}
+HERO_CTA_EXPECTATIONS = {
+    "Start here now": "start-here.html",
+    "See the action timeline": "what-to-do-first.html",
+    "Open printable guide": "printable-guide.html",
+}
+KEY_PAGES = [
+    "index.html",
+    "start-here.html",
+    "what-to-do-first.html",
+    "printable-guide.html",
+    "notes.html",
+    "resources-get-help.html",
+]
 
 # Runtime expectations keep checks explicit and maintainable.
 RUNTIME_EXPECTATIONS = {
@@ -92,6 +105,10 @@ ANCHOR_RE = re.compile(r"<a\b[^>]*>", re.IGNORECASE)
 BUTTON_RE = re.compile(r"<button\b[^>]*>", re.IGNORECASE)
 CLASS_ATTR_RE = re.compile(r'class\s*=\s*(["\'])(.*?)\1', re.IGNORECASE | re.DOTALL)
 BUTTON_CLASS_RE = re.compile(r"^button(?:-|$)", re.IGNORECASE)
+HERO_INNER_RULE_RE = re.compile(
+    r"\.home-hero\s+\.page-head-inner\s*\{(?P<body>.*?)\}",
+    re.IGNORECASE | re.DOTALL,
+)
 
 
 def parse_counts() -> tuple[dict[str, int], dict[str, list[str]], dict[str, int], dict[str, list[str]]]:
@@ -148,6 +165,62 @@ def verify_runtime() -> list[str]:
     return errors
 
 
+def verify_hero_css() -> list[str]:
+    errors: list[str] = []
+    css_path = ROOT / "assets/css/site.css"
+    css = css_path.read_text(encoding="utf-8")
+    match = HERO_INNER_RULE_RE.search(css)
+    if not match:
+        return ["Missing .home-hero .page-head-inner rule in assets/css/site.css."]
+
+    body = match.group("body")
+    normalized = " ".join(body.split()).lower()
+    if "overflow: visible" not in normalized:
+        errors.append("Hero inner rule must set overflow: visible.")
+    if "overflow: auto" in normalized or "overflow: scroll" in normalized:
+        errors.append("Hero inner rule must not use overflow: auto/scroll.")
+    if "max-block-size:" in normalized and "max-block-size: none" not in normalized:
+        errors.append("Hero inner rule must not cap max-block-size.")
+    if "max-block-size: none" not in normalized:
+        errors.append("Hero inner rule should explicitly set max-block-size: none.")
+    if "overflow-x: hidden" not in css.lower():
+        errors.append("Document-level horizontal overflow guard missing (overflow-x: hidden).")
+    return errors
+
+
+def verify_home_ctas() -> list[str]:
+    errors: list[str] = []
+    index_path = ROOT / "index.html"
+    text = index_path.read_text(encoding="utf-8")
+    hero_match = re.search(
+        r'<div class="hero-actions no-print">(?P<body>.*?)</div>',
+        text,
+        re.IGNORECASE | re.DOTALL,
+    )
+    if not hero_match:
+        return ["index.html missing .hero-actions block for homepage CTAs."]
+
+    hero_html = hero_match.group("body")
+    for label, href in HERO_CTA_EXPECTATIONS.items():
+        cta_pattern = re.compile(
+            rf'<a\b[^>]*href="{re.escape(href)}"[^>]*>\s*{re.escape(label)}\s*</a>',
+            re.IGNORECASE,
+        )
+        if not cta_pattern.search(hero_html):
+            errors.append(f'Homepage CTA missing or changed: "{label}" -> {href}')
+        if not (ROOT / href).exists():
+            errors.append(f'Homepage CTA target file missing: "{href}"')
+    return errors
+
+
+def verify_key_pages_exist() -> list[str]:
+    errors: list[str] = []
+    for page in KEY_PAGES:
+        if not (ROOT / page).exists():
+            errors.append(f"Key page missing: {page}")
+    return errors
+
+
 def main() -> int:
     anchor_button_counts, anchor_button_files, data_button_counts, data_button_files = parse_counts()
 
@@ -157,6 +230,9 @@ def main() -> int:
             errors.append(f"No HTML <button> found with required attribute [{required_attr}].")
 
     errors.extend(verify_runtime())
+    errors.extend(verify_hero_css())
+    errors.extend(verify_home_ctas())
+    errors.extend(verify_key_pages_exist())
 
     print("Interactive inventory report")
     print("=" * 28)
@@ -175,6 +251,9 @@ def main() -> int:
         count = data_button_counts.get(data_attr, 0)
         files = ", ".join(sorted(data_button_files.get(data_attr, []))) or "n/a"
         print(f"- [{data_attr}]: {count} (files: {files})")
+    print("\nHomepage hero CTA expectations")
+    for label, href in HERO_CTA_EXPECTATIONS.items():
+        print(f'- "{label}" -> {href}')
 
     if errors:
         print("\nInteraction checks failed:")
