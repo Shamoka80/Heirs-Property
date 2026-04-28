@@ -109,6 +109,7 @@ HERO_INNER_RULE_RE = re.compile(
     r"\.home-hero\s+\.page-head-inner\s*\{(?P<body>.*?)\}",
     re.IGNORECASE | re.DOTALL,
 )
+ROOT_VAR_RE = re.compile(r"--(?P<name>[a-z0-9-]+)\s*:\s*(?P<value>[^;]+);", re.IGNORECASE)
 
 
 def parse_counts() -> tuple[dict[str, int], dict[str, list[str]], dict[str, int], dict[str, list[str]]]:
@@ -213,6 +214,44 @@ def verify_home_ctas() -> list[str]:
     return errors
 
 
+def parse_clamp_max(value: str) -> float | None:
+    match = re.search(r"clamp\([^,]+,[^,]+,\s*([0-9.]+)rem\)", value)
+    if not match:
+        return None
+    return float(match.group(1))
+
+
+def verify_masthead_hierarchy() -> list[str]:
+    errors: list[str] = []
+    css = (ROOT / "assets/css/site.css").read_text(encoding="utf-8")
+    variables = {m.group("name"): m.group("value").strip() for m in ROOT_VAR_RE.finditer(css)}
+
+    home_size = parse_clamp_max(variables.get("home-hero-title-size", ""))
+    page_size = parse_clamp_max(variables.get("page-masthead-title-size", ""))
+    utility_size = parse_clamp_max(variables.get("utility-masthead-title-size", ""))
+    if home_size is None or page_size is None or utility_size is None:
+        errors.append("Masthead scale tokens must define clamp() values for home/page/utility title sizes.")
+    elif not (home_size > page_size > utility_size):
+        errors.append("Masthead hierarchy invalid: expected home hero title > internal page title > utility title.")
+
+    utility_pages = ["notes.html", "printable-guide.html", "about-this-guide.html", "accessibility.html", "404.html"]
+    for page in utility_pages:
+        text = (ROOT / page).read_text(encoding="utf-8")
+        if '<header class="page-head masthead-utility">' not in text:
+            errors.append(f"{page}: missing masthead-utility header class.")
+
+    return errors
+
+
+def verify_print_css_presence() -> list[str]:
+    errors: list[str] = []
+    for html_file in HTML_FILES:
+        text = html_file.read_text(encoding="utf-8")
+        if 'assets/css/print.css" media="print"' not in text:
+            errors.append(f"{html_file.name}: missing print.css print stylesheet link.")
+    return errors
+
+
 def verify_key_pages_exist() -> list[str]:
     errors: list[str] = []
     for page in KEY_PAGES:
@@ -233,6 +272,8 @@ def main() -> int:
     errors.extend(verify_hero_css())
     errors.extend(verify_home_ctas())
     errors.extend(verify_key_pages_exist())
+    errors.extend(verify_masthead_hierarchy())
+    errors.extend(verify_print_css_presence())
 
     print("Interactive inventory report")
     print("=" * 28)
