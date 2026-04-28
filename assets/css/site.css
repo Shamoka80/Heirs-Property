@@ -1068,4 +1068,3 @@ textarea { min-height: 8rem; resize: vertical; }
 .workspace-note { background:#eef1ff; border-left:5px solid #4054a5; }
 .action-group { margin-top:1rem; border:1px dashed var(--line-strong); border-radius: var(--radius); padding:1rem; }
 .danger-button { border-color:#d7a7a7; color:#6b1717; }
-  .home-hero .hero-visual { display: none; }
