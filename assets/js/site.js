@@ -161,6 +161,67 @@
     }
   }
 
+
+
+  function setupThemeSelector() {
+    var themes = [
+      { id: "theme-1", label: "Theme 1" },
+      { id: "theme-2", label: "Theme 2" },
+      { id: "theme-3", label: "Theme 3" }
+    ];
+    var defaultTheme = "theme-1";
+    var root = document.documentElement;
+    var selectorHost = document.querySelector(".header-actions");
+    if (!selectorHost) {
+      return;
+    }
+
+    var wrapper = document.createElement("div");
+    wrapper.className = "theme-picker";
+
+    var label = document.createElement("label");
+    label.className = "theme-picker-label";
+    label.setAttribute("for", "theme-select");
+    label.textContent = "Theme";
+
+    var select = document.createElement("select");
+    select.className = "theme-picker-select";
+    select.id = "theme-select";
+    select.setAttribute("aria-label", "Select site theme");
+
+    themes.forEach(function (theme) {
+      var option = document.createElement("option");
+      option.value = theme.id;
+      option.textContent = theme.label;
+      select.appendChild(option);
+    });
+
+    function applyTheme(themeId) {
+      var selected = themes.some(function (theme) { return theme.id === themeId; }) ? themeId : defaultTheme;
+      root.setAttribute("data-theme", selected);
+      select.value = selected;
+      try {
+        window.localStorage.setItem("heirsProperty.theme.v1", selected);
+      } catch (error) {}
+    }
+
+    var savedTheme = null;
+    try {
+      savedTheme = window.localStorage.getItem("heirsProperty.theme.v1");
+    } catch (error) {}
+
+    applyTheme(savedTheme || defaultTheme);
+
+    select.addEventListener("change", function () {
+      applyTheme(select.value);
+    });
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(select);
+    selectorHost.insertBefore(wrapper, selectorHost.firstChild);
+  }
+
+  setupThemeSelector();
   function setupParallax() {
     if (!window.requestAnimationFrame || !window.matchMedia) {
       return;

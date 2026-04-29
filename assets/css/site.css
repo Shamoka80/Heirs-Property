@@ -66,6 +66,72 @@
   --font-sans: "Inter", "Source Sans Pro", Arial, Helvetica, sans-serif;
 }
 
+:root[data-theme="theme-1"] {
+  --bg: #D7D5CE;
+  --surface: #FFFFFF;
+  --surface-alt: #ECE9E1;
+  --surface-strong: #1A2A4A;
+  --surface-strong-2: #13213B;
+  --text: #1D1D1B;
+  --text-soft: #2F3642;
+  --muted: #4B5768;
+  --line: #C6C0B3;
+  --line-strong: #A39A89;
+  --primary: #1A2A4A;
+  --secondary: #6B8A3A;
+  --accent: #D9A441;
+  --accent-soft: #F1E6CC;
+  --accent-ink: #7A5A42;
+  --link: #1A2A4A;
+  --link-hover: #13213B;
+  --focus: #D9A441;
+  --hero-rule: #7A5A42;
+}
+
+:root[data-theme="theme-2"] {
+  --bg: #F7F2E6;
+  --surface: #FFFFFF;
+  --surface-alt: #F4E8D2;
+  --surface-strong: #4B2E1F;
+  --surface-strong-2: #3B2418;
+  --text: #21170F;
+  --text-soft: #3E2B21;
+  --muted: #5E4537;
+  --line: #DCC9A9;
+  --line-strong: #BEA07B;
+  --primary: #4B2E1F;
+  --secondary: #A3472A;
+  --accent: #E8C88F;
+  --accent-soft: #F5E7CC;
+  --accent-ink: #6A3D5A;
+  --link: #4B2E1F;
+  --link-hover: #351F15;
+  --focus: #A3472A;
+  --hero-rule: #6A3D5A;
+}
+
+:root[data-theme="theme-3"] {
+  --bg: #F5F1E8;
+  --surface: #FFFFFF;
+  --surface-alt: #ECE6DB;
+  --surface-strong: #0C0C0C;
+  --surface-strong-2: #000000;
+  --text: #151515;
+  --text-soft: #2B2B2B;
+  --muted: #4B4B4B;
+  --line: #CEC6B8;
+  --line-strong: #A89D8A;
+  --primary: #1F4D2E;
+  --secondary: #5A4632;
+  --accent: #C89B2B;
+  --accent-soft: #EFE5C8;
+  --accent-ink: #332717;
+  --link: #1F4D2E;
+  --link-hover: #163A23;
+  --focus: #C89B2B;
+  --hero-rule: #5A4632;
+}
+
 *,
 *::before,
 *::after { box-sizing: border-box; }
@@ -164,6 +230,19 @@ select:focus-visible {
 }
 .brand-text { letter-spacing: .01em; }
 .header-actions { margin-left: auto; display: flex; align-items: center; gap: .75rem; }
+.theme-picker { display: inline-flex; align-items: center; gap: .4rem; }
+.theme-picker-label { font-size: .8rem; font-weight: 600; color: var(--text-soft); }
+.theme-picker-select {
+  min-height: 2.1rem;
+  padding: .2rem .45rem;
+  border: 1px solid var(--line-strong);
+  border-radius: .5rem;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: .85rem;
+}
+
 .top-link,.button,.button-secondary,.button-tertiary,.print-link {
   display: inline-flex;
   align-items: center;
