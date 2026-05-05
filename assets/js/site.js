@@ -310,6 +310,7 @@
   var searchDialog = null;
   var searchField = null;
   var searchResults = null;
+  var searchDialogPanel = null;
   var controlClasses = {
     topLink: "top-link",
     tertiary: "button-tertiary"
@@ -332,6 +333,16 @@
       return '<li><a href="' + item.href + '"><strong>' + item.title + "</strong><br>" + item.text + "</a></li>";
     }).join("") + "</ul>";
   }
+  function getSearchFocusableElements() {
+    if (!searchDialogPanel) return [];
+    return Array.prototype.filter.call(
+      searchDialogPanel.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+      function (element) {
+        return element.offsetParent !== null;
+      }
+    );
+  }
+
   function closeSearchDialog() {
     if (!searchDialog) return;
     searchDialog.hidden = true;
@@ -348,11 +359,12 @@
     searchDialog = document.createElement("section");
     searchDialog.className = "search-modal no-print";
     searchDialog.hidden = true;
-    searchDialog.innerHTML = '<div class="search-panel"><div class="search-panel-head"><h2>Search this guide</h2><button type="button" data-search-close>Close</button></div><label for="site-search">Find a page or topic</label><input id="site-search" type="text" autocomplete="off" placeholder="Try: tax notice, probate, partition, deed"><div data-search-results><p class="small">Type a word like “tax”, “probate”, or “partition”.</p></div></div>';
+    searchDialog.innerHTML = '<div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="site-search-title"><div class="search-panel-head"><h2 id="site-search-title">Search this guide</h2><button type="button" data-search-close>Close</button></div><label for="site-search">Find a page or topic</label><input id="site-search" type="text" autocomplete="off" placeholder="Try: tax notice, probate, partition, deed"><div data-search-results><p class="small">Type a word like “tax”, “probate”, or “partition”.</p></div></div>';
     document.body.appendChild(searchDialog);
 
     searchField = searchDialog.querySelector("#site-search");
     searchResults = searchDialog.querySelector("[data-search-results]");
+    searchDialogPanel = searchDialog.querySelector(".search-panel");
     var searchCloseButton = searchDialog.querySelector("[data-search-close]");
     searchCloseButton.className = controlClasses.tertiary;
     searchCloseButton.addEventListener("click", closeSearchDialog);
@@ -362,12 +374,36 @@
       renderSearchResults("");
       searchField.focus();
     });
+    searchDialog.addEventListener("click", function (event) {
+      if (event.target === searchDialog) {
+        closeSearchDialog();
+      }
+    });
     searchField.addEventListener("input", function (event) {
       renderSearchResults(event.target.value);
     });
     document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape" && searchDialog && !searchDialog.hidden) {
+      if (!searchDialog || searchDialog.hidden) {
+        return;
+      }
+      if (event.key === "Escape") {
         closeSearchDialog();
+        return;
+      }
+      if (event.key === "Tab") {
+        var focusable = getSearchFocusableElements();
+        if (!focusable.length) {
+          return;
+        }
+        var first = focusable[0];
+        var last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
       }
     });
   }
