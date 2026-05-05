@@ -50,6 +50,8 @@ echo "[predeploy] Running interaction verification..."
 python3 scripts/check-interactions.py
 echo "[predeploy] Running local link checks..."
 python3 scripts/check-links.py
+echo "[predeploy] Running guardrail verification..."
+python3 scripts/check-guardrails.py
 
 if [[ "$missing" -ne 0 ]]; then
   echo "[predeploy] FAILED: Required assets/references are missing. Block deployment."
