@@ -312,7 +312,7 @@
   var searchResults = null;
   var searchDialogPanel = null;
   var controlClasses = {
-    topLink: "top-link",
+    searchToggle: "header-search-toggle",
     tertiary: "button-tertiary"
   };
   function renderSearchResults(query) {
@@ -351,7 +351,7 @@
   if (headerActions) {
     searchButton = document.createElement("button");
     searchButton.type = "button";
-    searchButton.className = controlClasses.topLink;
+    searchButton.className = controlClasses.searchToggle;
     searchButton.setAttribute("data-search-toggle", "");
     searchButton.textContent = "Search";
     headerActions.insertBefore(searchButton, headerActions.firstChild);
