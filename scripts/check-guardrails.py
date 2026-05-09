@@ -76,6 +76,40 @@ def hidden_classes_under(max_width_limit):
                 hidden.add(cls)
     return hidden
 
+
+# Brand visibility guardrails.
+def selector_targets(selectors, target):
+    return any(part.strip() == target for part in selectors.split(','))
+
+brand_base_match = re.search(r'--brand-mark-base-size\s*:\s*([0-9.]+)rem\s*;', css_no_comments)
+if not brand_base_match:
+    errors.append('CSS missing --brand-mark-base-size token')
+elif float(brand_base_match.group(1)) < 2.5:
+    errors.append('--brand-mark-base-size must stay at least 2.5rem so the header logo remains prominent')
+
+brand_text_rule_found = False
+for selectors, body, _ in iter_rules(css_no_comments):
+    if selector_targets(selectors, '.brand-mark') and hidden_in_body(body):
+        errors.append('CSS hides .brand-mark by default')
+    if selector_targets(selectors, '.brand-text'):
+        brand_text_rule_found = True
+        normalized = ' '.join(body.lower().split())
+        if hidden_in_body(body) or re.search(r'\bfont-size\s*:\s*0\b', normalized):
+            errors.append('CSS hides .brand-text by default')
+
+if not brand_text_rule_found:
+    errors.append('CSS missing .brand-text rule for visible brand name styling')
+
+for media in re.finditer(r'@media\s*\((?:max-width:\s*(\d+)px|width\s*<=\s*(\d+)px)\)\s*\{(?P<body>.*?)\n\}', css_no_comments, re.S):
+    width=int(media.group(1) or media.group(2))
+    if width > 899:
+        continue
+    for selectors, body, _ in iter_rules(media.group('body')):
+        if selector_targets(selectors, '.brand-mark') and hidden_in_body(body):
+            errors.append(f'CSS hides .brand-mark below 899px in max-width:{width}px media rule')
+        if selector_targets(selectors, '.brand-text') and hidden_in_body(body):
+            errors.append(f'CSS hides .brand-text below 899px in max-width:{width}px media rule')
+
 mobile_hidden_classes=hidden_classes_under(899)
 if assigned_classes and len(assigned_classes) == 1 and assigned_classes[0] in mobile_hidden_classes:
     errors.append(f'[data-search-toggle] assigned only mobile/tablet-hidden class: {assigned_classes[0]}')
@@ -94,6 +128,8 @@ for selectors, body, _ in iter_rules(css_no_comments):
         continue
     if '.home-hero' in selectors and '.hero-visual' in selectors and hidden_in_body(body):
         errors.append('CSS globally hides .home-hero .hero-visual')
+    if 'HPfamilyland.gif' in selectors and hidden_in_body(body):
+        errors.append('CSS globally hides the homepage HPfamilyland.gif asset')
 
 small_phone_found=False
 for media in re.finditer(r'@media\s*\((?:max-width:\s*(\d+)px|width\s*<=\s*(\d+)px)\)\s*\{(?P<body>.*?)\n\}', css_no_comments, re.S):
