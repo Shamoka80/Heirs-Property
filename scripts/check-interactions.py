@@ -24,9 +24,8 @@ BUTTON_DATA_ATTRS = [
     "data-reset-notes",
     "data-export-notes",
     "data-nav-toggle",
-    "data-search-close",
 ]
-RUNTIME_INJECTED_ONLY = {"data-print-section", "data-search-close"}
+RUNTIME_INJECTED_ONLY = {"data-print-section"}
 HERO_CTA_EXPECTATIONS = {
     "Start here now": "start-here.html",
     "See the action timeline": "what-to-do-first.html",
@@ -91,12 +90,14 @@ RUNTIME_EXPECTATIONS = {
             "event.key === \"Escape\"",
         ],
     },
-    "data-search-close": {
+    "embedded search": {
         "files": ["assets/js/site.js"],
         "must_contain": [
-            "[data-search-close]",
-            "searchCloseButton.addEventListener(\"click\"",
-            "closeSearchDialog",
+            'className = "site-search no-print"',
+            "data-site-search",
+            'role", "search"',
+            "renderSearchResults",
+            "event.key === \"Escape\"",
         ],
     },
 }

@@ -25,34 +25,6 @@ for f in html:
 sitejs=(root/'assets/js/site.js').read_text(encoding='utf-8')
 css=(root/'assets/css/site.css').read_text(encoding='utf-8')
 css_no_comments=re.sub(r'/\*.*?\*/','',css,flags=re.S)
-for token in ['role="dialog"','aria-modal="true"','aria-labelledby="site-search-title"','<h2 id="site-search-title">']:
-    if token not in sitejs:
-        errors.append(f'search dialog token missing in site.js: {token}')
-
-# Search toggle responsive guardrails.
-if 'data-search-toggle' not in sitejs:
-    errors.append('site.js missing data-search-toggle trigger attribute')
-
-control_match=re.search(r'var\s+controlClasses\s*=\s*\{(?P<body>.*?)\};', sitejs, re.S)
-control_classes={}
-if control_match:
-    for key, value in re.findall(r'(\w+)\s*:\s*"([^"]+)"', control_match.group('body')):
-        control_classes[key]=value
-else:
-    errors.append('site.js missing controlClasses map for search trigger styling')
-
-class_assignment=re.search(r'searchButton\.className\s*=\s*(?P<expr>[^;]+);', sitejs)
-assigned_classes=[]
-if class_assignment:
-    expr=class_assignment.group('expr').strip()
-    control_key=re.fullmatch(r'controlClasses\.(\w+)', expr)
-    literal=re.fullmatch(r'"([^"]+)"', expr)
-    if control_key:
-        assigned_classes=control_classes.get(control_key.group(1), '').split()
-    elif literal:
-        assigned_classes=literal.group(1).split()
-else:
-    errors.append('site.js missing explicit className assignment for searchButton')
 
 def iter_rules(text):
     for m in re.finditer(r'(?P<selectors>[^{}@]+)\{(?P<body>[^{}]*)\}', text, re.S):
@@ -62,20 +34,68 @@ def hidden_in_body(body):
     normalized=' '.join(body.lower().split())
     return bool(re.search(r'\bdisplay\s*:\s*none\b', normalized) or re.search(r'\bvisibility\s*:\s*hidden\b', normalized))
 
+# Embedded static search guardrails.
+required_search_tokens = [
+    'className = "site-search no-print"',
+    'setAttribute("role", "search")',
+    'aria-label", "Search this guide"',
+    '<label class="site-search-label" for="site-search-input">Search this guide</label>',
+    'data-site-search type="search"',
+    'aria-controls="site-search-results"',
+    'role="status" aria-live="polite"',
+    'data-search-panel hidden',
+    'event.key === "Escape"',
+]
+for token in required_search_tokens:
+    if token not in sitejs:
+        errors.append(f'embedded search token missing in site.js: {token}')
 
-def hidden_classes_under(max_width_limit):
-    hidden=set()
-    for media in re.finditer(r'@media\s*\((?:max-width:\s*(\d+)px|width\s*<=\s*(\d+)px)\)\s*\{(?P<body>.*?)\n\}', css_no_comments, re.S):
-        width=int(media.group(1) or media.group(2))
-        if width > max_width_limit:
-            continue
-        for selectors, body, _ in iter_rules(media.group('body')):
-            if not hidden_in_body(body):
-                continue
-            for cls in re.findall(r'\.([A-Za-z0-9_-]+)', selectors):
-                hidden.add(cls)
-    return hidden
+for forbidden in ['role="dialog"', 'aria-modal="true"', 'data-search-toggle', 'search-modal', 'closeSearchDialog']:
+    if forbidden in sitejs:
+        errors.append(f'legacy modal search token must not remain in site.js: {forbidden}')
 
+if 'search-result-link' not in sitejs or 'search-result-snippet' not in sitejs or 'search-result-url' not in sitejs:
+    errors.append('site.js must render compact search result title, snippet, and destination URL')
+if re.search(r'<a[^>]+class="(?:button|button-secondary|button-tertiary)[^" ]*"[^>]*>.*search-result', sitejs, re.S):
+    errors.append('search results appear to use button-like link classes')
+
+index_match = re.search(r'var\s+searchIndex\s*=\s*\[(?P<body>.*?)\];', sitejs, re.S)
+required_index_pages = [
+    'index.html',
+    'start-here.html',
+    'what-is-heirs-property.html',
+    'how-families-lose-land.html',
+    'south-carolina-legal-protections.html',
+    'what-to-do-first.html',
+    'protecting-preserving-family-land.html',
+    'economic-opportunities.html',
+    'history-culture-legacy.html',
+    'resources-get-help.html',
+    'notes.html',
+    'printable-guide.html',
+    'accessibility.html',
+    'about-this-guide.html',
+]
+if not index_match:
+    errors.append('site.js missing static searchIndex array')
+else:
+    search_index_body = index_match.group('body')
+    for page in required_index_pages:
+        if f'"href": "{page}"' not in search_index_body and f"href: \"{page}\"" not in search_index_body:
+            errors.append(f'searchIndex missing required page: {page}')
+    for term in ['probate', 'deed', 'tax', 'partition', 'heirs', 'legal aid', 'notes', 'family land']:
+        if term not in search_index_body.lower():
+            errors.append(f'searchIndex missing expected site term: {term}')
+
+if '.site-search' not in css_no_comments or '.site-search input[type="search"]' not in css_no_comments:
+    errors.append('CSS missing embedded .site-search input styling')
+if '.site-search-panel' not in css_no_comments or '.search-result-link' not in css_no_comments:
+    errors.append('CSS missing compact search dropdown/result styling')
+if '.search-result-link' in css_no_comments:
+    result_rule = ''.join(body for selectors, body in re.findall(r'([^{}@]+)\{([^{}]*)\}', css_no_comments, re.S) if '.search-result-link' in selectors)
+    normalized_result_rule = ' '.join(result_rule.lower().split())
+    if 'min-height' in normalized_result_rule or 'border-radius: 999px' in normalized_result_rule:
+        errors.append('search result links look button-like; keep them compact text links')
 
 # Brand visibility guardrails.
 def selector_targets(selectors, target):
@@ -123,17 +143,6 @@ for media in re.finditer(r'@media\s*\((?:max-width:\s*(\d+)px|width\s*<=\s*(\d+)
         if selector_targets(selectors, '.brand-text') and re.search(r'\bdisplay\s*:\s*none\b', ' '.join(body.lower().split())):
             errors.append(f'CSS sets .brand-text to display:none in {condition}')
 
-mobile_hidden_classes=hidden_classes_under(899)
-if assigned_classes and len(assigned_classes) == 1 and assigned_classes[0] in mobile_hidden_classes:
-    errors.append(f'[data-search-toggle] assigned only mobile/tablet-hidden class: {assigned_classes[0]}')
-
-for media in re.finditer(r'@media\s*\((?:max-width:\s*(\d+)px|width\s*<=\s*(\d+)px)\)\s*\{(?P<body>.*?)\n\}', css_no_comments, re.S):
-    width=int(media.group(1) or media.group(2))
-    if width > 899:
-        continue
-    for selectors, body, _ in iter_rules(media.group('body')):
-        if '[data-search-toggle]' in selectors and hidden_in_body(body):
-            errors.append(f'CSS hides [data-search-toggle] below 899px in max-width:{width}px media rule')
 
 # Homepage hero visual guardrails.
 for selectors, body, _ in iter_rules(css_no_comments):
