@@ -82,7 +82,7 @@ if assigned_classes and len(assigned_classes) == 1 and assigned_classes[0] in mo
 
 for media in re.finditer(r'@media\s*\((?:max-width:\s*(\d+)px|width\s*<=\s*(\d+)px)\)\s*\{(?P<body>.*?)\n\}', css_no_comments, re.S):
     width=int(media.group(1) or media.group(2))
-    if width >= 899:
+    if width > 899:
         continue
     for selectors, body, _ in iter_rules(media.group('body')):
         if '[data-search-toggle]' in selectors and hidden_in_body(body):

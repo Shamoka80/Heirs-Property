@@ -312,7 +312,7 @@
   var searchResults = null;
   var searchDialogPanel = null;
   var controlClasses = {
-    searchToggle: "header-search-toggle",
+    searchToggle: "header-search-toggle search-toggle",
     tertiary: "button-tertiary"
   };
   function renderSearchResults(query) {
