@@ -38,9 +38,11 @@ def hidden_in_body(body):
 required_search_tokens = [
     'className = "site-search no-print"',
     'setAttribute("role", "search")',
-    'aria-label", "Search this guide"',
-    '<label class="site-search-label" for="site-search-input">Search this guide</label>',
+    'setAttribute("aria-label", "Site search")',
+    '<label class="sr-only" for="site-search-input">Search this guide</label>',
     'data-site-search type="search"',
+    'placeholder="Search topics like deed, probate, tax…"',
+    'aria-label="Search this guide"',
     'aria-controls="site-search-results"',
     'role="status" aria-live="polite"',
     'data-search-panel hidden',
@@ -53,6 +55,23 @@ for token in required_search_tokens:
 for forbidden in ['role="dialog"', 'aria-modal="true"', 'data-search-toggle', 'search-modal', 'closeSearchDialog']:
     if forbidden in sitejs:
         errors.append(f'legacy modal search token must not remain in site.js: {forbidden}')
+
+if 'site-search-label' in sitejs or '.site-search-label' in css_no_comments:
+    errors.append('embedded search must not render a visible external site-search-label prompt')
+if not re.search(r'<input[^>]+data-site-search[^>]+(?:aria-label=|aria-labelledby=)', sitejs) and '<label class="sr-only" for="site-search-input">' not in sitejs:
+    errors.append('embedded search input must keep an accessible name')
+for prompt in ['Find a page or topic', 'Use search']:
+    if prompt in sitejs:
+        errors.append(f'visible external search prompt must not remain in site.js: {prompt}')
+
+for f in html:
+    t = f.read_text(encoding='utf-8')
+    header = re.search(r'<div class="header-actions">(?P<body>.*?)</div>', t, re.S)
+    if header and re.search(r'<a\b[^>]*class="top-link"[^>]*href="resources-get-help\.html"[^>]*>\s*Get help\s*</a>', header.group('body'), re.I):
+        errors.append(f'{f.name} has redundant header-adjacent Get help top-link next to search')
+    nav = re.search(r'<nav[^>]+data-primary-nav[^>]*>(?P<body>.*?)</nav>', t, re.S)
+    if f.name != '404.html' and (not nav or 'href="resources-get-help.html"' not in nav.group('body')):
+        errors.append(f'{f.name} primary navigation missing resources-get-help.html pathway')
 
 if 'search-result-link' not in sitejs or 'search-result-snippet' not in sitejs or 'search-result-url' not in sitejs:
     errors.append('site.js must render compact search result title, snippet, and destination URL')
