@@ -84,8 +84,20 @@ def selector_targets(selectors, target):
 brand_base_match = re.search(r'--brand-mark-base-size\s*:\s*([0-9.]+)rem\s*;', css_no_comments)
 if not brand_base_match:
     errors.append('CSS missing --brand-mark-base-size token')
-elif float(brand_base_match.group(1)) < 2.5:
-    errors.append('--brand-mark-base-size must stay at least 2.5rem so the header logo remains prominent')
+elif float(brand_base_match.group(1)) < 3.0:
+    errors.append('--brand-mark-base-size must stay at least 3rem so the header logo remains prominent')
+
+brand_size_match = re.search(r'--brand-mark-size\s*:\s*clamp\(\s*(?:var\(--brand-mark-base-size\)|([0-9.]+)rem)\s*,', css_no_comments)
+if not brand_size_match:
+    errors.append('CSS missing --brand-mark-size clamp token')
+elif brand_size_match.group(1) and float(brand_size_match.group(1)) < 3.0:
+    errors.append('--brand-mark-size clamp minimum must stay at least 3rem')
+
+brand_text_size_match = re.search(r'--brand-text-size\s*:\s*clamp\(\s*([0-9.]+)rem\s*,.*?,\s*([0-9.]+)rem\s*\)', css_no_comments)
+if not brand_text_size_match:
+    errors.append('CSS missing --brand-text-size clamp token')
+elif float(brand_text_size_match.group(1)) < 1.08 or float(brand_text_size_match.group(2)) < 1.45:
+    errors.append('--brand-text-size must remain large enough to keep the brand name legible')
 
 brand_text_rule_found = False
 for selectors, body, _ in iter_rules(css_no_comments):
@@ -100,15 +112,16 @@ for selectors, body, _ in iter_rules(css_no_comments):
 if not brand_text_rule_found:
     errors.append('CSS missing .brand-text rule for visible brand name styling')
 
-for media in re.finditer(r'@media\s*\((?:max-width:\s*(\d+)px|width\s*<=\s*(\d+)px)\)\s*\{(?P<body>.*?)\n\}', css_no_comments, re.S):
-    width=int(media.group(1) or media.group(2))
-    if width > 899:
-        continue
+for media in re.finditer(r'@media\s*\((?:max-width:\s*(\d+)px|width\s*<=\s*(\d+)px|min-width:\s*(\d+)px)\)\s*\{(?P<body>.*?)\n\}', css_no_comments, re.S):
+    width=int(media.group(1) or media.group(2) or media.group(3))
+    condition = f'media rule at {width}px'
     for selectors, body, _ in iter_rules(media.group('body')):
         if selector_targets(selectors, '.brand-mark') and hidden_in_body(body):
-            errors.append(f'CSS hides .brand-mark below 899px in max-width:{width}px media rule')
+            errors.append(f'CSS hides .brand-mark in {condition}')
         if selector_targets(selectors, '.brand-text') and hidden_in_body(body):
-            errors.append(f'CSS hides .brand-text below 899px in max-width:{width}px media rule')
+            errors.append(f'CSS hides .brand-text in {condition}')
+        if selector_targets(selectors, '.brand-text') and re.search(r'\bdisplay\s*:\s*none\b', ' '.join(body.lower().split())):
+            errors.append(f'CSS sets .brand-text to display:none in {condition}')
 
 mobile_hidden_classes=hidden_classes_under(899)
 if assigned_classes and len(assigned_classes) == 1 and assigned_classes[0] in mobile_hidden_classes:
