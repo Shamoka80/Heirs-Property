@@ -667,8 +667,8 @@
     searchForm = document.createElement("form");
     searchForm.className = "site-search no-print";
     searchForm.setAttribute("role", "search");
-    searchForm.setAttribute("aria-label", "Search this guide");
-    searchForm.innerHTML = '<label class="site-search-label" for="site-search-input">Search this guide</label><div class="site-search-control"><input id="site-search-input" data-site-search type="search" autocomplete="off" placeholder="Search this guide" aria-controls="site-search-results" aria-expanded="false"><div id="site-search-panel" class="site-search-panel" data-search-panel hidden><div id="site-search-status" class="sr-only" role="status" aria-live="polite"></div><div id="site-search-results" class="site-search-results" data-search-results></div></div></div>';
+    searchForm.setAttribute("aria-label", "Site search");
+    searchForm.innerHTML = '<label class="sr-only" for="site-search-input">Search this guide</label><div class="site-search-control"><input id="site-search-input" data-site-search type="search" autocomplete="off" placeholder="Search topics like deed, probate, tax…" aria-label="Search this guide" aria-controls="site-search-results" aria-expanded="false"><div id="site-search-panel" class="site-search-panel" data-search-panel hidden><div id="site-search-status" class="sr-only" role="status" aria-live="polite"></div><div id="site-search-results" class="site-search-results" data-search-results></div></div></div>';
     headerActions.insertBefore(searchForm, headerActions.firstChild);
 
     searchField = searchForm.querySelector("[data-site-search]");
