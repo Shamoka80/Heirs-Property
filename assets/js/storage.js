@@ -7,3 +7,12 @@
   function remove(key) { if (!canUseLocalStorage()) { return false; } try { localStorage.removeItem(key); return true; } catch (error) { return false; } }
   window.HeirsPropertyStorage = { keys: StorageKeys, canUseLocalStorage: canUseLocalStorage, readJson: readJson, writeJson: writeJson, remove: remove };
 }());
+
+(function () {
+  if (document.querySelector('link[data-government-theme]')) { return; }
+  var theme = document.createElement("link");
+  theme.rel = "stylesheet";
+  theme.href = "assets/css/government-theme.css?v=20260611";
+  theme.setAttribute("data-government-theme", "formal");
+  document.head.appendChild(theme);
+}());
