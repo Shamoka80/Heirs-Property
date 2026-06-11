@@ -256,7 +256,7 @@
       href: "how-families-lose-land.html",
       title: "How families can lose land",
       description: "Common warning signs and practical ways to lower risk.",
-      headings: ["Major risk pathways", "Short practical scenarios", "How to lower risk"],
+      headings: ["Major warning signs", "Short practical scenarios", "How to lower risk"],
       text: "Tax delinquency, pressure to sell quickly, family conflict, title confusion after death, warning signs, parcel numbers, notices, signatures, legal review, records, notes, and action planning."
     },
     {
