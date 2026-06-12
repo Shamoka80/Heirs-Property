@@ -3,64 +3,9 @@
 
   var pageKey = window.location.pathname.split("/").pop() || "index.html";
   var isHome = pageKey === "index.html";
-  var ordinaryGuidePages = {
-    "start-here.html": true,
-    "what-is-heirs-property.html": true,
-    "how-families-lose-land.html": true,
-    "south-carolina-legal-protections.html": true,
-    "what-to-do-first.html": true,
-    "protecting-preserving-family-land.html": true,
-    "economic-opportunities.html": true,
-    "history-culture-legacy.html": true,
-    "resources-get-help.html": true
-  };
-
+  var brochurePdfPath = "assets/downloads/heirs-property-trifold-brochure.pdf";
   if (!document.body.id) {
     document.body.id = "top";
-  }
-
-  function removeElements(selector) {
-    Array.prototype.forEach.call(document.querySelectorAll(selector), function (node) {
-      if (node && node.parentNode) {
-        node.parentNode.removeChild(node);
-      }
-    });
-  }
-
-  function normalizePrintAndUtilityLinks() {
-    Array.prototype.forEach.call(document.querySelectorAll("#primary-nav a[href='printable-guide.html']"), function (link) {
-      var item = link.closest("li");
-      if (item && item.parentNode) {
-        item.parentNode.removeChild(item);
-      }
-    });
-
-    Array.prototype.forEach.call(document.querySelectorAll(".on-page-tools a[href='printable-guide.html']"), function (link) {
-      link.textContent = "Printable handout";
-      if (ordinaryGuidePages[pageKey] || pageKey === "notes.html") {
-        link.remove();
-      }
-    });
-
-    if (ordinaryGuidePages[pageKey] || pageKey === "notes.html") {
-      removeElements(".page-utilities .print-link");
-    }
-
-    Array.prototype.forEach.call(document.querySelectorAll(".progress-steps li"), function (item) {
-      if (/Printable guide/i.test(item.textContent)) {
-        if (ordinaryGuidePages[pageKey] || pageKey === "notes.html") {
-          item.remove();
-        } else {
-          item.textContent = "Printable handout";
-        }
-      }
-    });
-
-    Array.prototype.forEach.call(document.querySelectorAll("a[href='printable-guide.html']"), function (link) {
-      if (/Printable guide|printed guide|print companion/i.test(link.textContent)) {
-        link.textContent = "Printable handout";
-      }
-    });
   }
 
   var footer = document.querySelector("[data-shared-footer]");
@@ -93,7 +38,7 @@
         links: [
           { href: "resources-get-help.html", label: "Get help" },
           { href: "notes.html", label: "Notes" },
-          { href: "printable-guide.html", label: "Printable handout" }
+          { href: brochurePdfPath, label: "Printable handout", download: true }
         ]
       },
       {
@@ -108,7 +53,8 @@
     var footerNav = footerGroups.map(function (group) {
       var links = group.links.map(function (link) {
         var current = link.href === pageKey ? ' aria-current="page"' : "";
-        return '<li><a href="' + link.href + '"' + current + ">" + link.label + "</a></li>";
+        var download = link.download ? ' download' : "";
+        return '<li><a href="' + link.href + '"' + current + download + ">" + link.label + "</a></li>";
       }).join("");
       return "<section><h2>" + group.title + "</h2><ul>" + links + "</ul></section>";
     }).join("");
@@ -131,7 +77,6 @@
   var mobileQuery = window.matchMedia("(max-width: 899px)");
   var navLinks = primaryNav ? Array.prototype.slice.call(primaryNav.querySelectorAll("a")) : [];
 
-  normalizePrintAndUtilityLinks();
 
   navLinks = primaryNav ? Array.prototype.slice.call(primaryNav.querySelectorAll("a")) : [];
   navLinks.forEach(function (link) {
@@ -209,7 +154,6 @@
     var utilityRow = document.querySelector(".page-utilities");
     if (!mastheadTools || !utilityRow) { return; }
     var links = Array.prototype.slice.call(mastheadTools.querySelectorAll("a[href]"));
-    links = links.filter(function (link) { return link.getAttribute("href") !== "printable-guide.html"; });
     if (!links.length) {
       mastheadTools.setAttribute("hidden", "");
       return;
@@ -274,11 +218,11 @@
       text: "Private notes save only in this browser on this device. Notes are not sent to a server. Save notes, download as text, download as JSON, print notes, and clear notes."
     },
     {
-      href: "printable-guide.html",
+      href: brochurePdfPath,
       title: "Printable handout",
-      description: "Temporary public print handout for family meetings, calls, and appointments.",
+      description: "Downloadable PDF handout for family meetings, calls, and appointments.",
       headings: ["Printable handout", "What heirs’ property means", "Common risks and land-loss pathways", "First-action checklist", "Documents and records checklist"],
-      text: "Printable handout for heirs’ property, shared family land, title after a death, first records, deed, tax bill, probate, estate papers, family meeting questions, South Carolina caution, and notes space."
+      text: "Downloadable PDF handout for heirs’ property, shared family land, title after a death, first records, deed, tax bill, probate, estate papers, family meeting questions, South Carolina caution, and notes space."
     }
   ];
 
@@ -383,11 +327,7 @@
     ],
     "resources-get-help.html": [
       { href: "notes.html", label: "Prepare your call notes" },
-      { href: "printable-guide.html", label: "Open the printable handout" }
-    ],
-    "printable-guide.html": [
-      { href: "notes.html", label: "Continue tracking updates in notes" },
-      { href: "resources-get-help.html", label: "Use support contacts for next steps" }
+      { href: brochurePdfPath, label: "Download the printable handout", download: true }
     ]
   };
 
@@ -395,7 +335,8 @@
     var pageMain = document.querySelector(".page-main");
     if (pageMain) {
       var nextLinks = nextStepMap[pageKey].map(function (link) {
-        return '<a class="card" href="' + link.href + '"><strong>Next step:</strong><br>' + link.label + "</a>";
+        var download = link.download ? ' download' : "";
+        return '<a class="card" href="' + link.href + '"' + download + '><strong>Next step:</strong><br>' + link.label + "</a>";
       }).join("");
       var nextPanel = document.createElement("nav");
       nextPanel.className = "section next-step-panel";
