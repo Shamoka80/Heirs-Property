@@ -3,6 +3,7 @@
 
   var pageKey = window.location.pathname.split("/").pop() || "index.html";
   var isHome = pageKey === "index.html";
+  var brochurePdf = "assets/downloads/heirs-property-trifold-brochure.pdf";
   var ordinaryGuidePages = {
     "start-here.html": true,
     "what-is-heirs-property.html": true,
@@ -27,16 +28,8 @@
     });
   }
 
-  function normalizePrintAndUtilityLinks() {
-    Array.prototype.forEach.call(document.querySelectorAll("#primary-nav a[href='printable-guide.html']"), function (link) {
-      var item = link.closest("li");
-      if (item && item.parentNode) {
-        item.parentNode.removeChild(item);
-      }
-    });
-
-    Array.prototype.forEach.call(document.querySelectorAll(".on-page-tools a[href='printable-guide.html']"), function (link) {
-      link.textContent = "Printable handout";
+  function normalizeDownloadUtilityLinks() {
+    Array.prototype.forEach.call(document.querySelectorAll(".on-page-tools a[href='" + brochurePdf + "']"), function (link) {
       if (ordinaryGuidePages[pageKey] || pageKey === "notes.html") {
         link.remove();
       }
@@ -45,22 +38,6 @@
     if (ordinaryGuidePages[pageKey] || pageKey === "notes.html") {
       removeElements(".page-utilities .print-link");
     }
-
-    Array.prototype.forEach.call(document.querySelectorAll(".progress-steps li"), function (item) {
-      if (/Printable guide/i.test(item.textContent)) {
-        if (ordinaryGuidePages[pageKey] || pageKey === "notes.html") {
-          item.remove();
-        } else {
-          item.textContent = "Printable handout";
-        }
-      }
-    });
-
-    Array.prototype.forEach.call(document.querySelectorAll("a[href='printable-guide.html']"), function (link) {
-      if (/Printable guide|printed guide|print companion/i.test(link.textContent)) {
-        link.textContent = "Printable handout";
-      }
-    });
   }
 
   var footer = document.querySelector("[data-shared-footer]");
@@ -93,7 +70,7 @@
         links: [
           { href: "resources-get-help.html", label: "Get help" },
           { href: "notes.html", label: "Notes" },
-          { href: "printable-guide.html", label: "Printable handout" }
+          { href: brochurePdf, label: "Download brochure", download: true }
         ]
       },
       {
@@ -108,7 +85,8 @@
     var footerNav = footerGroups.map(function (group) {
       var links = group.links.map(function (link) {
         var current = link.href === pageKey ? ' aria-current="page"' : "";
-        return '<li><a href="' + link.href + '"' + current + ">" + link.label + "</a></li>";
+        var download = link.download ? " download" : "";
+        return '<li><a href="' + link.href + '"' + current + download + ">" + link.label + "</a></li>";
       }).join("");
       return "<section><h2>" + group.title + "</h2><ul>" + links + "</ul></section>";
     }).join("");
@@ -131,7 +109,7 @@
   var mobileQuery = window.matchMedia("(max-width: 899px)");
   var navLinks = primaryNav ? Array.prototype.slice.call(primaryNav.querySelectorAll("a")) : [];
 
-  normalizePrintAndUtilityLinks();
+  normalizeDownloadUtilityLinks();
 
   navLinks = primaryNav ? Array.prototype.slice.call(primaryNav.querySelectorAll("a")) : [];
   navLinks.forEach(function (link) {
@@ -209,7 +187,7 @@
     var utilityRow = document.querySelector(".page-utilities");
     if (!mastheadTools || !utilityRow) { return; }
     var links = Array.prototype.slice.call(mastheadTools.querySelectorAll("a[href]"));
-    links = links.filter(function (link) { return link.getAttribute("href") !== "printable-guide.html"; });
+    links = links.filter(function (link) { return link.getAttribute("href") !== brochurePdf; });
     if (!links.length) {
       mastheadTools.setAttribute("hidden", "");
       return;
@@ -228,8 +206,8 @@
       href: "index.html",
       title: "Understand heirs’ property before you sign, sell, or make land decisions.",
       description: "Plain-language, South Carolina-focused guidance for families dealing with heirs’ property, family land, records, and first steps.",
-      headings: ["Before you sign", "Choose what you need", "Start here", "What to do first", "Learn the basics", "Get help", "What heirs’ property means", "Records to gather before you call", "Tools & handouts", "Private notes", "Printable handout", "Need support now?"],
-      text: "South Carolina heirs’ property guide. Before you sign, pause and gather records. Start here, what to do first, learn the basics, and get help. Records to gather before you call include deed, probate, title, tax notice, parcel number, family and ownership information, deadlines, and questions. Tools and handouts include private notes, printable handout, and South Carolina support contacts. Center for Heirs’ Property and South Carolina Legal Services. Educational information only, not legal advice."
+      headings: ["Before you sign", "Choose what you need", "Start here", "What to do first", "Learn the basics", "Get help", "What heirs’ property means", "Records to gather before you call", "Tools & handouts", "Download printable brochure", "Need support now?"],
+      text: "South Carolina heirs’ property guide. Before you sign, pause and gather records. Start here, what to do first, learn the basics, and get help. Tools and handouts include private notes, downloadable brochure, and South Carolina support contacts. Center for Heirs’ Property and South Carolina Legal Services. Educational information only, not legal advice."
     },
     {
       href: "start-here.html",
@@ -250,7 +228,7 @@
       title: "What to do first",
       description: "A first-action checklist for today, this week, and this month.",
       headings: ["Today", "This week", "This month", "Checklist saving"],
-      text: "Checklist for deeds, tax notices, probate papers, possible heirs, current occupants, deadlines, legal aid, county tax records, family contact list, notes, and questions. Checklist progress saves only in this browser on this device."
+      text: "Checklist for deeds, tax notices, probate papers, possible heirs, current occupants, deadlines, legal aid, county tax records, family contact list, notes, and questions."
     },
     {
       href: "how-families-lose-land.html",
@@ -274,11 +252,11 @@
       text: "Private notes save only in this browser on this device. Notes are not sent to a server. Save notes, download as text, download as JSON, print notes, and clear notes."
     },
     {
-      href: "printable-guide.html",
-      title: "Printable handout",
-      description: "Temporary public print handout for family meetings, calls, and appointments.",
-      headings: ["Printable handout", "What heirs’ property means", "Common risks and land-loss pathways", "First-action checklist", "Documents and records checklist"],
-      text: "Printable handout for heirs’ property, shared family land, title after a death, first records, deed, tax bill, probate, estate papers, family meeting questions, South Carolina caution, and notes space."
+      href: brochurePdf,
+      title: "Download printable brochure",
+      description: "Download the heirs’ property tri-fold brochure PDF for family meetings, calls, and appointments.",
+      headings: ["Download brochure", "South Carolina heirs property", "Before you sign", "Warning signs", "Records to gather", "Questions to ask"],
+      text: "Download brochure PDF for heirs’ property, shared family land, title after a death, deed, tax bill, probate, estate papers, South Carolina caution, and resource contacts."
     }
   ];
 
@@ -341,7 +319,8 @@
       }
       searchStatus.textContent = matches.length + " search result" + (matches.length === 1 ? "" : "s") + " found.";
       searchResults.innerHTML = '<ul class="search-result-list">' + matches.map(function (match) {
-        return '<li class="search-result-item"><a class="search-result-link" href="' + escapeHtml(match.item.href) + '"><span class="search-result-title">' + escapeHtml(match.item.title) + '</span><span class="search-result-snippet">' + escapeHtml(match.snippet) + '</span><span class="search-result-url">' + escapeHtml(match.item.href) + '</span></a></li>';
+        var download = match.item.href === brochurePdf ? ' download' : '';
+        return '<li class="search-result-item"><a class="search-result-link" href="' + escapeHtml(match.item.href) + '"' + download + '><span class="search-result-title">' + escapeHtml(match.item.title) + '</span><span class="search-result-snippet">' + escapeHtml(match.snippet) + '</span><span class="search-result-url">' + escapeHtml(match.item.href) + '</span></a></li>';
       }).join("") + "</ul>";
     }
 
@@ -383,11 +362,7 @@
     ],
     "resources-get-help.html": [
       { href: "notes.html", label: "Prepare your call notes" },
-      { href: "printable-guide.html", label: "Open the printable handout" }
-    ],
-    "printable-guide.html": [
-      { href: "notes.html", label: "Continue tracking updates in notes" },
-      { href: "resources-get-help.html", label: "Use support contacts for next steps" }
+      { href: brochurePdf, label: "Download brochure", download: true }
     ]
   };
 
@@ -395,7 +370,8 @@
     var pageMain = document.querySelector(".page-main");
     if (pageMain) {
       var nextLinks = nextStepMap[pageKey].map(function (link) {
-        return '<a class="card" href="' + link.href + '"><strong>Next step:</strong><br>' + link.label + "</a>";
+        var download = link.download ? " download" : "";
+        return '<a class="card" href="' + link.href + '"' + download + '><strong>Next step:</strong><br>' + link.label + "</a>";
       }).join("");
       var nextPanel = document.createElement("nav");
       nextPanel.className = "section next-step-panel";
