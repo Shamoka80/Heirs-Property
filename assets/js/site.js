@@ -28,22 +28,7 @@
     });
   }
 
-  function normalizePrintAndUtilityLinks() {
-    Array.prototype.forEach.call(document.querySelectorAll("#primary-nav a[href='printable-guide.html']"), function (link) {
-      var item = link.closest("li");
-      if (item && item.parentNode) {
-        item.parentNode.removeChild(item);
-      }
-    });
-
-    Array.prototype.forEach.call(document.querySelectorAll("a[href='printable-guide.html']"), function (link) {
-      link.setAttribute("href", brochurePdf);
-      link.setAttribute("download", "");
-      if (/Printable guide|Printable handout|printed guide|print companion|Open printable handout/i.test(link.textContent)) {
-        link.textContent = "Download brochure";
-      }
-    });
-
+  function normalizeDownloadUtilityLinks() {
     Array.prototype.forEach.call(document.querySelectorAll(".on-page-tools a[href='" + brochurePdf + "']"), function (link) {
       if (ordinaryGuidePages[pageKey] || pageKey === "notes.html") {
         link.remove();
@@ -53,12 +38,6 @@
     if (ordinaryGuidePages[pageKey] || pageKey === "notes.html") {
       removeElements(".page-utilities .print-link");
     }
-
-    Array.prototype.forEach.call(document.querySelectorAll(".progress-steps li"), function (item) {
-      if (/Printable guide|Printable handout/i.test(item.textContent)) {
-        item.remove();
-      }
-    });
   }
 
   var footer = document.querySelector("[data-shared-footer]");
@@ -130,7 +109,7 @@
   var mobileQuery = window.matchMedia("(max-width: 899px)");
   var navLinks = primaryNav ? Array.prototype.slice.call(primaryNav.querySelectorAll("a")) : [];
 
-  normalizePrintAndUtilityLinks();
+  normalizeDownloadUtilityLinks();
 
   navLinks = primaryNav ? Array.prototype.slice.call(primaryNav.querySelectorAll("a")) : [];
   navLinks.forEach(function (link) {
