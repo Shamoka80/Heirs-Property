@@ -1,0 +1,453 @@
+/* Phase 16 tri-fold brochure styles. Linked only from printable-guide.html. */
+:root {
+  --brochure-ink: #162238;
+  --brochure-muted: #465366;
+  --brochure-line: #c9d2df;
+  --brochure-paper: #fffdf8;
+  --brochure-soft: #f3efe4;
+  --brochure-accent: #8a5a24;
+  --brochure-accent-strong: #1f3a5f;
+  --brochure-green: #556b3d;
+}
+
+.brochure-body {
+  background: linear-gradient(180deg, #f7f4ec 0%, #ffffff 32rem);
+}
+
+.brochure-page .container {
+  max-width: 78rem;
+}
+
+.brochure-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  margin-bottom: 1.25rem;
+}
+
+.brochure-actions .small {
+  margin: 0;
+  color: var(--muted);
+}
+
+.brochure-preview-note {
+  border-left: 4px solid var(--brochure-accent);
+  background: var(--brochure-soft);
+  padding: .9rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.trifold-sheet {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.brochure-side {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .8rem;
+  align-items: stretch;
+}
+
+.brochure-side-title {
+  grid-column: 1 / -1;
+  margin: 0 0 -.35rem;
+  color: var(--brochure-muted);
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.brochure-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 34rem;
+  padding: 1rem;
+  border: 1px solid var(--brochure-line);
+  border-radius: 1rem;
+  background: var(--surface, #fff);
+  color: var(--brochure-ink);
+  box-shadow: 0 .7rem 1.5rem rgba(28, 42, 66, .08);
+  overflow: hidden;
+}
+
+.brochure-panel h2,
+.brochure-panel h3 {
+  color: var(--brochure-accent-strong);
+  line-height: 1.12;
+}
+
+.brochure-panel h2 {
+  margin-top: 0;
+  margin-bottom: .55rem;
+  font-size: clamp(1.25rem, 1rem + .55vw, 1.65rem);
+}
+
+.brochure-panel h3 {
+  margin-bottom: .35rem;
+  font-size: 1rem;
+}
+
+.brochure-panel p,
+.brochure-panel li {
+  font-size: .95rem;
+  line-height: 1.45;
+}
+
+.brochure-panel ul,
+.brochure-panel ol {
+  margin-top: .35rem;
+  padding-left: 1.15rem;
+}
+
+.brochure-panel li + li {
+  margin-top: .28rem;
+}
+
+.panel-label {
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  max-width: 100%;
+  padding: .25rem .5rem;
+  border: 1px solid var(--brochure-line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--brochure-muted);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.cover-panel {
+  justify-content: space-between;
+  background: linear-gradient(165deg, #f7f0df 0%, #fffdf8 46%, #e8f0e5 100%);
+}
+
+.cover-brand {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  margin-bottom: .75rem;
+}
+
+.cover-seal {
+  width: 3.1rem;
+  height: 3.1rem;
+  object-fit: contain;
+}
+
+.cover-brand strong {
+  display: block;
+  color: var(--brochure-accent-strong);
+  line-height: 1.1;
+}
+
+.cover-title {
+  margin: .75rem 0 .5rem;
+  font-size: clamp(1.65rem, 2vw, 2.15rem);
+}
+
+.cover-subtitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--brochure-accent);
+}
+
+.family-image-card {
+  margin: .7rem 0;
+  border-radius: .85rem;
+  overflow: hidden;
+  border: 1px solid rgba(31, 58, 95, .22);
+  background: #fff;
+}
+
+.family-image-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.family-image-card figcaption {
+  padding: .5rem .65rem;
+  color: var(--brochure-muted);
+  font-size: .8rem;
+  line-height: 1.35;
+}
+
+.qr-card {
+  display: grid;
+  grid-template-columns: 5.2rem 1fr;
+  gap: .65rem;
+  align-items: center;
+  padding: .65rem;
+  border: 1px solid var(--brochure-line);
+  border-radius: .85rem;
+  background: #fff;
+}
+
+.qr-card img {
+  width: 5.1rem;
+  height: 5.1rem;
+}
+
+.qr-url {
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--brochure-accent-strong);
+  font-size: .83rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.story-panel {
+  background: linear-gradient(180deg, #fff 0%, #f7f4ec 100%);
+}
+
+.story-callout,
+.resource-note,
+.disclaimer-box {
+  padding: .7rem .8rem;
+  border: 1px solid var(--brochure-line);
+  border-radius: .8rem;
+  background: #fff;
+}
+
+.story-callout {
+  border-left: 4px solid var(--brochure-green);
+}
+
+.warning-list strong,
+.records-list strong,
+.question-list strong {
+  color: var(--brochure-accent-strong);
+}
+
+.resource-list {
+  display: grid;
+  gap: .65rem;
+  margin-top: .65rem;
+}
+
+.resource-card {
+  padding: .65rem .75rem;
+  border: 1px solid var(--brochure-line);
+  border-radius: .8rem;
+  background: #fff;
+}
+
+.resource-card p {
+  margin: .25rem 0 0;
+}
+
+.resource-card a {
+  font-weight: 700;
+}
+
+.summary-panel {
+  background: #fffdf8;
+}
+
+.summary-panel .mini-list {
+  padding-left: 1.05rem;
+}
+
+.brochure-disclaimer {
+  margin-top: auto;
+  color: var(--brochure-muted);
+  font-size: .82rem;
+  line-height: 1.35;
+}
+
+.bw-note {
+  margin-top: .75rem;
+  color: var(--brochure-muted);
+  font-size: .8rem;
+}
+
+@media (max-width: 980px) {
+  .brochure-side {
+    grid-template-columns: 1fr;
+  }
+
+  .brochure-panel {
+    min-height: 0;
+  }
+}
+
+@media print {
+  @page {
+    size: letter landscape;
+    margin: .25in;
+  }
+
+  html,
+  body.brochure-body {
+    background: #fff !important;
+  }
+
+  body.brochure-body {
+    color: #000 !important;
+    font-size: 8.4pt;
+    line-height: 1.25;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body.brochure-body .site-header,
+  body.brochure-body .footer,
+  body.brochure-body .page-head,
+  body.brochure-body .breadcrumbs,
+  body.brochure-body .brochure-actions,
+  body.brochure-body .brochure-preview-note,
+  body.brochure-body .mobile-help-strip,
+  body.brochure-body .no-print {
+    display: none !important;
+  }
+
+  body.brochure-body .page-wrap,
+  body.brochure-body .container,
+  body.brochure-body .layout,
+  body.brochure-body .page-main {
+    display: block !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .trifold-sheet {
+    display: block;
+    gap: 0;
+  }
+
+  .brochure-side {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .12in;
+    width: 10.5in;
+    min-height: 8in;
+    margin: 0 auto;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .brochure-side:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .brochure-side-title {
+    display: none !important;
+  }
+
+  .brochure-panel {
+    min-height: 7.85in;
+    max-height: 7.85in;
+    padding: .16in;
+    border: 1pt solid #555 !important;
+    border-radius: 0;
+    box-shadow: none !important;
+    background: #fff !important;
+    color: #000 !important;
+    overflow: hidden;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .brochure-panel h2,
+  .brochure-panel h3,
+  .cover-title,
+  .cover-brand strong,
+  .cover-subtitle {
+    color: #000 !important;
+  }
+
+  .brochure-panel h2 {
+    font-size: 13.5pt;
+    margin-bottom: .08in;
+  }
+
+  .brochure-panel h3,
+  .brochure-panel p,
+  .brochure-panel li {
+    font-size: 8.2pt;
+    line-height: 1.24;
+  }
+
+  .brochure-panel ul,
+  .brochure-panel ol {
+    margin: .04in 0 .06in;
+    padding-left: .18in;
+  }
+
+  .brochure-panel li + li {
+    margin-top: .025in;
+  }
+
+  .panel-label {
+    border-color: #555 !important;
+    color: #000 !important;
+    background: #fff !important;
+    font-size: 6.8pt;
+  }
+
+  .cover-panel,
+  .story-panel,
+  .summary-panel,
+  .story-callout,
+  .resource-note,
+  .disclaimer-box,
+  .resource-card,
+  .qr-card {
+    background: #fff !important;
+    border-color: #555 !important;
+  }
+
+  .cover-seal {
+    width: .58in;
+    height: .58in;
+  }
+
+  .family-image-card {
+    margin: .08in 0;
+    border-color: #555 !important;
+  }
+
+  .family-image-card figcaption {
+    padding: .05in .06in;
+    color: #000 !important;
+    font-size: 7pt;
+  }
+
+  .qr-card {
+    grid-template-columns: .88in 1fr;
+    gap: .08in;
+    padding: .08in;
+  }
+
+  .qr-card img {
+    width: .85in;
+    height: .85in;
+  }
+
+  .qr-url,
+  .brochure-panel a {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+
+  .resource-card {
+    padding: .07in .08in;
+  }
+
+  .brochure-disclaimer,
+  .bw-note {
+    color: #000 !important;
+    font-size: 7.1pt;
+  }
+}
