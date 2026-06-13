@@ -1,7 +1,7 @@
 # Responsive Acceptance QA Artifact Process
 
 ## Purpose
-Establish a repeatable QA artifact workflow for responsive layout acceptance across key templates, with objective pass/fail criteria and screenshot evidence.
+Establish a repeatable QA artifact workflow for responsive layout acceptance across active site templates, with objective pass/fail criteria and screenshot evidence.
 
 ## Required viewport set
 Run every check at these viewport widths (CSS px):
@@ -18,13 +18,16 @@ Run every check at these viewport widths (CSS px):
 
 Use full-height browser windows so first-screen observations are accurate.
 
-## Pages/templates in scope
-Capture artifacts for the following pages each cycle:
+## Pages/templates in active scope
+Capture artifacts for the following active pages/templates each cycle:
 
 1. `index.html` (home template)
 2. **Long-form content page** (representative content template; use `what-is-heirs-property.html` unless release scope specifies a different long-form page)
 3. `notes.html`
-4. `printable-guide.html`
+4. Downloadable brochure access path (verify the active PDF download link and response from `assets/downloads/heirs-property-trifold-brochure.pdf`; do not treat it as an HTML responsive-page template)
+
+## Legacy/superseded asset record
+The former live brochure page, `printable-guide.html`, is a historical QA record only. It was superseded by the PDF-only brochure delivery model merged in PR #63. Do not include it in active responsive screenshot cycles, active page inventories, live route checks, or current artifact naming examples. Preserve this note so prior QA records remain interpretable.
 
 ## Artifact storage convention
 Store screenshots under:
@@ -36,17 +39,17 @@ Where `YYYY-MM-DD` is the test execution date (UTC or project-local date; keep c
 ### Naming convention
 Use:
 
-`<page>-<viewport>-<check>.png`
+`<page-or-asset>-<viewport>-<check>.png`
 
 Examples:
 
 - `index-1440-hero-balance.png`
 - `what-is-heirs-property-768-cta-alignment.png`
 - `notes-390-tap-targets.png`
-- `printable-guide-1024-first-screen.png`
+- `brochure-pdf-download-1024-route-check.png`
 
 ## Concrete acceptance checks (pass/fail)
-For each page and each required viewport, verify all checks below.
+For each active page/template and each required viewport, verify all checks below. For the PDF brochure, verify the download path, file response, and linked entry points instead of applying HTML viewport-layout checks to the PDF itself.
 
 ### 1) Hero height and first-screen balance
 **Pass if all are true:**
@@ -94,14 +97,26 @@ For each page and each required viewport, verify all checks below.
 - Primary actions are too close together, causing likely mis-taps.
 - Interactive controls are partially off-screen or obscured by sticky UI.
 
+### 4) Downloadable brochure path
+**Pass if all are true:**
+- The homepage, generated footer, search result, and next-step entry points route to `assets/downloads/heirs-property-trifold-brochure.pdf`.
+- Download links use clear text such as `Download brochure` or equivalent current copy.
+- The removed live brochure page is not treated as an active route.
+
+**Fail if any are true:**
+- A user-facing active route sends visitors to the superseded live brochure page.
+- The PDF download path is missing or broken.
+- The PDF is replaced by a live HTML brochure page.
+
 ## Execution procedure
 1. Create today’s artifact folder: `docs/qa/screenshots/YYYY-MM-DD/`.
-2. Open each in-scope page.
+2. Open each active in-scope page/template.
 3. For each required viewport, capture screenshots for:
    - hero/first-screen balance,
    - hero nested-scroll + horizontal-overflow confirmation,
    - CTA/button sizing/alignment,
-   - mobile tap targets (required at 480, 390, and 375).
+   - mobile tap targets (required at 480, 390, and 375),
+   - brochure PDF download-route verification where applicable.
 4. Record result per check as **Pass** or **Fail** in the run log.
 5. For every **Fail**, include:
    - screenshot filename,
@@ -112,14 +127,16 @@ For each page and each required viewport, verify all checks below.
 ## Run log template
 Use this table in PR descriptions or QA notes.
 
-| Date | Page | Viewport | Check | Result | Evidence | Notes |
+| Date | Page/asset | Viewport | Check | Result | Evidence | Notes |
 |---|---|---:|---|---|---|---|
 | YYYY-MM-DD | index.html | 1440 | Hero + first-screen balance | Pass/Fail | `docs/qa/screenshots/YYYY-MM-DD/...png` |  |
 | YYYY-MM-DD | index.html | 1440 | CTA sizing/alignment | Pass/Fail | `docs/qa/screenshots/YYYY-MM-DD/...png` |  |
 | YYYY-MM-DD | notes.html | 390 | Tap target comfort | Pass/Fail | `docs/qa/screenshots/YYYY-MM-DD/...png` |  |
+| YYYY-MM-DD | brochure PDF download | n/a | Download route | Pass/Fail | `docs/qa/screenshots/YYYY-MM-DD/...png` |  |
 
 ## Sign-off rule
 Responsive acceptance is complete only when:
-- All in-scope pages were reviewed at all required viewports,
+- All active in-scope pages/templates were reviewed at all required viewports,
+- The active brochure PDF download path was verified,
 - All required checks have screenshot evidence,
 - No unresolved **High** severity failures remain.
