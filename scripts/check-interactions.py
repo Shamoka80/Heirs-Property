@@ -128,11 +128,19 @@ def verify_brochure_download_contract():
         "footer download route": '{ href: brochurePdf, label: "Download brochure", download: true }',
         "search-index route": "href: brochurePdf,",
         "search-index title": 'title: "Download printable brochure"',
-        "next-step route": '{ href: brochurePdf, label: "Download brochure" }',
     }
     for label, snippet in required_sitejs.items():
         if snippet not in sitejs:
             errors.append(f"site.js missing {label}: {snippet}")
+
+    next_step_pattern = re.compile(
+        r'\{[^}]*href:\s*brochurePdf[^}]*label:\s*"Download brochure"[^}]*download:\s*true[^}]*\}',
+        re.S,
+    )
+    if not next_step_pattern.search(sitejs):
+        errors.append(
+            'site.js missing next-step route with href: brochurePdf, label: "Download brochure", and download: true'
+        )
 
     for removed in REMOVED_LIVE_ARTIFACTS:
         if removed in index:
