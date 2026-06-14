@@ -119,7 +119,11 @@ def check_site_js_download_routing():
     assert_contains("footer download link", path, text, '{ href: brochurePdf, label: "Download brochure", download: true }')
     assert_contains("search index brochure route", path, text, 'href: brochurePdf,')
     assert_contains("search result brochure title", path, text, 'title: "Download printable brochure"')
-    assert_contains("next-step brochure route", path, text, '{ href: brochurePdf, label: "Download brochure" }')
+
+    # Robust next-step brochure-route check: require href: brochurePdf, label: "Download brochure", download: true
+    next_step_pattern = re.compile(r'\{[^}]*href:\s*brochurePdf[^}]*label:\s*"Download brochure"[^}]*download:\s*true[^}]*\}', re.S)
+    if not next_step_pattern.search(text):
+        fail(f"{path}: next-step brochure route missing or does not require download:true: '{{ href: brochurePdf, label: "Download brochure", download: true }}'")
 
 
 def check_historical_doc_references():
