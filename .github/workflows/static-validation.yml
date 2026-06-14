@@ -16,7 +16,15 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          REPOSITORY: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git init --quiet .
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${REPOSITORY}.git"
+          git fetch --quiet --depth=1 origin "${BRANCH_NAME}"
+          git checkout --quiet FETCH_HEAD
 
       - name: Run guardrail checks
         run: python3 scripts/check-guardrails.py
