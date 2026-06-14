@@ -123,7 +123,10 @@ def check_site_js_download_routing():
     # Robust next-step brochure-route check: require href: brochurePdf, label: "Download brochure", download: true
     next_step_pattern = re.compile(r'\{[^}]*href:\s*brochurePdf[^}]*label:\s*"Download brochure"[^}]*download:\s*true[^}]*\}', re.S)
     if not next_step_pattern.search(text):
-        fail(f"{path}: next-step brochure route missing or does not require download:true: '{{ href: brochurePdf, label: "Download brochure", download: true }}'")
+        fail(
+            f'{path}: next-step brochure route missing or does not require download:true: '
+            '{{ href: brochurePdf, label: "Download brochure", download: true }}'
+        )
 
 
 def check_historical_doc_references():
