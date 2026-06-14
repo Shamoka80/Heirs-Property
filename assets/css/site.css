@@ -502,64 +502,55 @@ input[type="date"] {
   }
 }
 
-/* Phase 20 mobile legibility remediation.
-   Phone-width only: preserves the approved desktop section structure. */
+/* Phase 20 mobile legibility correction.
+   Phone-width only: color and contrast remediation, not a spacing/layout pass. */
 @media (max-width: 700px) {
   :root {
-    --phase20-card-pad: 1rem;
-    --phase20-section-gap: 1.25rem;
-    --phase20-section-panel-bg: rgba(255, 255, 255, .985);
-    --phase20-section-panel-alt: rgba(255, 255, 255, .965);
-    --phase20-card-bg: rgba(255, 255, 255, .99);
+    --phase20-section-panel-bg: #FFFFFF;
+    --phase20-section-panel-alt: #F7F9FC;
+    --phase20-card-bg: #FFFFFF;
   }
 
   body {
-    background: color-mix(in srgb, var(--bg) 92%, #FFFFFF 8%);
+    background: #F7F9FC;
+    color: var(--text);
   }
 
   body::before,
   body:not(.mode-dashboard)::before {
-    opacity: .035;
-    filter: grayscale(1) contrast(.8) brightness(1.08);
+    opacity: .012;
+    filter: grayscale(1) contrast(.55) brightness(1.22);
   }
 
-  .page-wrap {
-    padding-block: 1.2rem 3rem;
+  .page-head {
+    background: linear-gradient(165deg, #FFFFFF 0%, #F2F6FB 56%, #F8F3E8 100%);
+    border-bottom-color: #AFA595;
+  }
+
+  .page-head .lead,
+  .lead,
+  .section-intro,
+  .lead-paragraph {
+    color: #303848;
   }
 
   .page-main > .section {
-    padding: 1rem .95rem;
-    border-color: color-mix(in srgb, var(--line-strong) 72%, #FFFFFF 28%);
-    border-left: 1px solid color-mix(in srgb, var(--line-strong) 72%, #FFFFFF 28%);
-    background: linear-gradient(180deg, var(--phase20-section-panel-bg), var(--phase20-section-panel-alt));
-    box-shadow: 0 6px 18px rgba(16, 42, 67, .07);
+    background: linear-gradient(180deg, #FFFFFF 0%, #F7F9FC 100%);
+    border-color: #AFA595;
+    box-shadow: 0 6px 18px rgba(16, 42, 67, .08);
   }
 
   .page-main > .section:nth-of-type(even) {
-    background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(250, 252, 254, .96));
+    background: linear-gradient(180deg, #FFFEFC 0%, #F3F6F9 100%);
   }
 
   .page-main > .section::before {
-    inset: .95rem auto .95rem 0;
-    width: 3px;
-    opacity: .55;
-    background: color-mix(in srgb, var(--secondary) 74%, #FFFFFF 26%);
+    opacity: .95;
+    background: linear-gradient(180deg, #8F4110 0%, #1F3A5F 100%);
   }
 
   .section-header {
-    padding-bottom: .55rem;
-    border-bottom-color: color-mix(in srgb, var(--line-strong) 55%, #FFFFFF 45%);
-  }
-
-  .section > h2::after,
-  .callout > h2::after,
-  .warning > h2::after,
-  .notice-bar > h2::after,
-  .checklist-box > h2::after {
-    height: 2px;
-    width: 2.5rem;
-    margin-top: .35rem;
-    opacity: .7;
+    border-bottom-color: #B8AE9C;
   }
 
   .card,
@@ -569,22 +560,50 @@ input[type="date"] {
   .timeline-step,
   .note-panel,
   .checklist-box,
-  .notice-bar,
-  .callout,
-  .warning,
   .field-group,
   details,
   .quick-path-list a {
-    background-color: var(--phase20-card-bg);
-    border-color: color-mix(in srgb, var(--line-strong) 68%, #FFFFFF 32%);
-    box-shadow: 0 3px 10px rgba(16, 42, 67, .055);
+    background-color: #FFFFFF;
+    border-color: #AFA595;
+    box-shadow: 0 3px 12px rgba(16, 42, 67, .07);
+    color: var(--text);
+  }
+
+  .callout {
+    background-color: #FFFDFC;
+    border-color: #B9855C;
+    border-left-color: var(--secondary);
+    box-shadow: 0 3px 12px rgba(16, 42, 67, .07);
+  }
+
+  .warning {
+    background-color: #FFF3F0;
+    border-color: #C79A94;
+    border-left-color: var(--danger);
+    box-shadow: 0 3px 12px rgba(138, 45, 45, .08);
+  }
+
+  .notice-bar {
+    background-color: #F1F8F4;
+    border-color: #9FB9A8;
+    box-shadow: 0 3px 12px rgba(16, 42, 67, .07);
   }
 
   .page-main,
   .page-main p,
   .page-main li,
   .page-main label,
-  .page-main summary {
+  .page-main summary,
+  .card p,
+  .resource-card p,
+  .resource-panel p,
+  .site-map-card p,
+  .timeline-step p,
+  .note-panel p,
+  .callout p,
+  .warning p,
+  .notice-bar p,
+  .checklist-box p {
     color: var(--text);
   }
 
@@ -592,8 +611,12 @@ input[type="date"] {
   .help-text,
   .quick-path-list span,
   .search-result-snippet,
-  .checklist-meta {
-    color: color-mix(in srgb, var(--text-soft) 92%, #000 8%);
+  .checklist-meta,
+  .breadcrumbs,
+  .progress-steps li,
+  .kicker,
+  .eyebrow-descriptor {
+    color: #343C4D;
   }
 }
 
