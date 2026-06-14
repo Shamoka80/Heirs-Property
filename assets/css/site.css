@@ -502,6 +502,101 @@ input[type="date"] {
   }
 }
 
+/* Phase 20 mobile legibility remediation.
+   Phone-width only: preserves the approved desktop section structure. */
+@media (max-width: 700px) {
+  :root {
+    --phase20-card-pad: 1rem;
+    --phase20-section-gap: 1.25rem;
+    --phase20-section-panel-bg: rgba(255, 255, 255, .985);
+    --phase20-section-panel-alt: rgba(255, 255, 255, .965);
+    --phase20-card-bg: rgba(255, 255, 255, .99);
+  }
+
+  body {
+    background: color-mix(in srgb, var(--bg) 92%, #FFFFFF 8%);
+  }
+
+  body::before,
+  body:not(.mode-dashboard)::before {
+    opacity: .035;
+    filter: grayscale(1) contrast(.8) brightness(1.08);
+  }
+
+  .page-wrap {
+    padding-block: 1.2rem 3rem;
+  }
+
+  .page-main > .section {
+    padding: 1rem .95rem;
+    border-color: color-mix(in srgb, var(--line-strong) 72%, #FFFFFF 28%);
+    border-left: 1px solid color-mix(in srgb, var(--line-strong) 72%, #FFFFFF 28%);
+    background: linear-gradient(180deg, var(--phase20-section-panel-bg), var(--phase20-section-panel-alt));
+    box-shadow: 0 6px 18px rgba(16, 42, 67, .07);
+  }
+
+  .page-main > .section:nth-of-type(even) {
+    background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(250, 252, 254, .96));
+  }
+
+  .page-main > .section::before {
+    inset: .95rem auto .95rem 0;
+    width: 3px;
+    opacity: .55;
+    background: color-mix(in srgb, var(--secondary) 74%, #FFFFFF 26%);
+  }
+
+  .section-header {
+    padding-bottom: .55rem;
+    border-bottom-color: color-mix(in srgb, var(--line-strong) 55%, #FFFFFF 45%);
+  }
+
+  .section > h2::after,
+  .callout > h2::after,
+  .warning > h2::after,
+  .notice-bar > h2::after,
+  .checklist-box > h2::after {
+    height: 2px;
+    width: 2.5rem;
+    margin-top: .35rem;
+    opacity: .7;
+  }
+
+  .card,
+  .resource-card,
+  .resource-panel,
+  .site-map-card,
+  .timeline-step,
+  .note-panel,
+  .checklist-box,
+  .notice-bar,
+  .callout,
+  .warning,
+  .field-group,
+  details,
+  .quick-path-list a {
+    background-color: var(--phase20-card-bg);
+    border-color: color-mix(in srgb, var(--line-strong) 68%, #FFFFFF 32%);
+    box-shadow: 0 3px 10px rgba(16, 42, 67, .055);
+  }
+
+  .page-main,
+  .page-main p,
+  .page-main li,
+  .page-main label,
+  .page-main summary {
+    color: var(--text);
+  }
+
+  .section-header p,
+  .help-text,
+  .quick-path-list span,
+  .search-result-snippet,
+  .checklist-meta {
+    color: color-mix(in srgb, var(--text-soft) 92%, #000 8%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
