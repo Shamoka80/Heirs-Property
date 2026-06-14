@@ -18,12 +18,19 @@ jobs:
       - name: Check out repository
         env:
           BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          EVENT_NAME: ${{ github.event_name }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REF_NAME: ${{ github.ref_name }}
           REPOSITORY: ${{ github.repository }}
           GH_TOKEN: ${{ github.token }}
         run: |
           git init --quiet .
           git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${REPOSITORY}.git"
-          git fetch --quiet --depth=1 origin "${BRANCH_NAME}"
+          if [ "${EVENT_NAME}" = "pull_request" ]; then
+            git fetch --quiet --depth=1 origin "refs/pull/${PR_NUMBER}/merge"
+          else
+            git fetch --quiet --depth=1 origin "${REF_NAME}"
+          fi
           git checkout --quiet FETCH_HEAD
 
       - name: Run guardrail checks
