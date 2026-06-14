@@ -109,6 +109,13 @@ def verify_brochure_download():
         errors.append('Homepage missing brochure PDF download link')
     if BROCHURE_PDF not in sitejs:
         errors.append('site.js missing brochure PDF route')
+    next_step_brochure_route = re.search(
+        r'"resources-get-help\.html"\s*:\s*\[[^\]]*?\{(?=[^}]*\bhref\s*:\s*brochurePdf\b)(?=[^}]*\blabel\s*:\s*["\']Download brochure["\'])(?=[^}]*\bdownload\s*:\s*true\b)[^}]*\}',
+        sitejs,
+        re.S,
+    )
+    if not next_step_brochure_route:
+        errors.append('site.js missing next-step brochure route with href: brochurePdf, label: "Download brochure", download: true')
     if 'printable-guide.html' in index or 'printable-guide.html' in sitejs:
         errors.append('Live printable-guide route still present in homepage or site.js')
     return errors

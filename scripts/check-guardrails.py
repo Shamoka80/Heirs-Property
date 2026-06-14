@@ -45,6 +45,14 @@ if 'assets/downloads/heirs-property-trifold-brochure.pdf' not in sitejs:
 if 'Download brochure' not in sitejs:
     errors.append('site.js missing Download brochure language')
 
+next_step_brochure_route = re.search(
+    r'"resources-get-help\.html"\s*:\s*\[[^\]]*?\{(?=[^}]*\bhref\s*:\s*brochurePdf\b)(?=[^}]*\blabel\s*:\s*["\']Download brochure["\'])(?=[^}]*\bdownload\s*:\s*true\b)[^}]*\}',
+    sitejs,
+    re.S,
+)
+if not next_step_brochure_route:
+    errors.append('site.js missing next-step brochure route with href: brochurePdf, label: "Download brochure", download: true')
+
 required_footer = [
     'Need help now?', '(843) 745-7055', '(866) 657-2676', '(888) 346-5592',
     'not legal advice', 'start-here.html', 'what-to-do-first.html', 'notes.html',
