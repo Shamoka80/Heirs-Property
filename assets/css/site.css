@@ -1,3 +1,441 @@
 @import url("site-base.css?v=20260414");
 @import url("government-theme.css?v=20260611");
 @import url("core-cleanup.css?v=20260611");
+
+/* Phase 20 aesthetic and UX refinement.
+   Additive presentation-only overrides: no content, routing, brochure, or validation contract changes. */
+:root {
+  --phase20-section-gap: clamp(1.45rem, 2.5vw, 2.25rem);
+  --phase20-card-pad: clamp(1rem, 1.6vw, 1.28rem);
+  --phase20-grid-gap: clamp(.85rem, 1.7vw, 1.25rem);
+  --phase20-reading-measure: 68ch;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--focus) 48%, transparent 52%);
+  color: var(--surface-strong-2);
+}
+
+.header-inner,
+.container,
+.footer-inner,
+.page-head-inner {
+  width: min(calc(100% - clamp(1rem, 4vw, 2rem)), var(--max));
+}
+
+.page-wrap {
+  padding-block: clamp(1.55rem, 3.2vw, 2.8rem) clamp(3rem, 5vw, 4.6rem);
+}
+
+.page-head-inner {
+  display: grid;
+  gap: .48rem;
+}
+
+.page-head .kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .25rem .38rem;
+}
+
+.page-head .kicker .eyebrow-separator {
+  margin-inline: .12rem;
+}
+
+.page-head h1 {
+  text-wrap: balance;
+}
+
+.page-head .lead,
+.lead,
+.section-header p,
+.help-text,
+.search-result-snippet {
+  max-width: var(--phase20-reading-measure);
+}
+
+.breadcrumbs {
+  margin-bottom: clamp(.85rem, 1.7vw, 1.25rem);
+}
+
+.page-utilities {
+  padding-bottom: .75rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 72%, transparent 28%);
+}
+
+.layout {
+  gap: clamp(1.35rem, 3vw, 2.4rem);
+}
+
+.page-main > .section,
+.page-main > .callout,
+.page-main > .warning,
+.page-main > .notice-bar,
+.page-main > .checklist-box,
+.page-main > .form-grid {
+  margin-top: var(--phase20-section-gap);
+}
+
+.page-main > :first-child {
+  margin-top: 0;
+}
+
+.section-header {
+  gap: .4rem 1rem;
+  margin-bottom: clamp(.8rem, 1.6vw, 1.1rem);
+}
+
+.section-header h2,
+.section > h2,
+.callout > h2,
+.warning > h2,
+.notice-bar > h2,
+.checklist-box > h2,
+.note-panel > h2,
+.field-group legend {
+  text-wrap: balance;
+}
+
+.section > :first-child,
+.callout > :first-child,
+.warning > :first-child,
+.notice-bar > :first-child,
+.card > :first-child,
+.resource-card > :first-child,
+.resource-panel > :first-child,
+.timeline-step > :first-child,
+.note-panel > :first-child,
+.site-map-card > :first-child,
+.field-group > :first-child {
+  margin-top: 0;
+}
+
+.section > :last-child,
+.callout > :last-child,
+.warning > :last-child,
+.notice-bar > :last-child,
+.card > :last-child,
+.resource-card > :last-child,
+.resource-panel > :last-child,
+.timeline-step > :last-child,
+.note-panel > :last-child,
+.site-map-card > :last-child,
+.field-group > :last-child {
+  margin-bottom: 0;
+}
+
+.card-grid,
+.resource-grid,
+.site-map-grid,
+.learn-grid,
+.tools-grid,
+.help-grid,
+.timeline-steps,
+.quick-path-list {
+  gap: var(--phase20-grid-gap);
+  align-items: stretch;
+}
+
+.card,
+.resource-card,
+.resource-panel,
+.site-map-card,
+.timeline-step,
+.note-panel,
+.checklist-box,
+.notice-bar,
+.callout,
+.warning,
+.field-group,
+details,
+.quick-path-list a {
+  padding: var(--phase20-card-pad);
+}
+
+.card,
+.resource-card,
+.resource-panel,
+.site-map-card,
+.timeline-step,
+.note-panel,
+.quick-path-list a,
+.tool-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card p:last-child,
+.resource-card p:last-child,
+.resource-panel p:last-child,
+.site-map-card p:last-child,
+.timeline-step p:last-child,
+.tool-panel p:last-child {
+  margin-top: auto;
+}
+
+.quick-path-list a,
+.card,
+.resource-card,
+.resource-panel,
+.timeline-step,
+.site-map-card,
+.note-panel,
+.field-group,
+details {
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, background-color .18s ease;
+}
+
+.quick-path-list a:hover,
+.card:focus-within,
+.resource-card:focus-within,
+.resource-panel:focus-within,
+.timeline-step:focus-within,
+.site-map-card:focus-within,
+.note-panel:focus-within,
+.field-group:focus-within,
+details:focus-within {
+  border-color: color-mix(in srgb, var(--secondary) 72%, var(--line) 28%);
+  box-shadow: var(--shadow-md);
+}
+
+.quick-path-list a:hover,
+.resource-panel:hover,
+.resource-card:hover,
+.site-map-card:hover {
+  transform: translateY(-1px);
+}
+
+.button,
+.button-secondary,
+.button-tertiary,
+.print-link,
+.top-link,
+.nav-toggle,
+.mobile-help-actions a {
+  min-height: max(var(--btn-height), 44px);
+}
+
+.button-group,
+.form-actions,
+.on-page-tools,
+.cta-row,
+.checklist-tools {
+  gap: .65rem .75rem;
+}
+
+.button-tertiary,
+.button-secondary {
+  background-clip: padding-box;
+}
+
+.primary-nav a:focus-visible,
+.mobile-help-actions a:focus-visible,
+.footer a:focus-visible,
+.search-result-link:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+.site-search {
+  flex-basis: clamp(12rem, 18vw, 16rem);
+}
+
+.site-search input[type="search"] {
+  min-height: 42px;
+  padding-inline: .82rem;
+}
+
+.site-search-panel {
+  padding: .55rem;
+  border-color: var(--line-strong);
+}
+
+.search-result-link {
+  padding: .72rem .78rem;
+}
+
+.search-result-title {
+  text-wrap: balance;
+}
+
+.progress-steps {
+  gap: .55rem;
+  margin-bottom: clamp(1.25rem, 2.5vw, 1.85rem);
+}
+
+.progress-steps li {
+  font-weight: 700;
+}
+
+.checklist li {
+  gap: .85rem;
+  padding: .95rem 1rem;
+}
+
+.checklist label {
+  line-height: 1.5;
+}
+
+textarea,
+input[type="text"],
+input[type="date"] {
+  line-height: 1.5;
+}
+
+.footer {
+  margin-top: clamp(2rem, 4vw, 3.2rem);
+}
+
+.footer-inner {
+  gap: clamp(1.2rem, 3vw, 2.2rem);
+}
+
+.footer-nav {
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.footer-nav ul {
+  gap: .55rem;
+}
+
+.footer a {
+  text-underline-offset: .22em;
+}
+
+.footer a:hover {
+  color: #FFFFFF;
+}
+
+@media (min-width: 900px) {
+  .layout:not(.with-aside) .page-main {
+    max-width: min(var(--content), 100%);
+  }
+
+  .page-main {
+    width: 100%;
+  }
+}
+
+@media (max-width: 899px) {
+  .site-header {
+    position: sticky;
+  }
+
+  .site-search {
+    order: 3;
+    flex: 1 1 100%;
+    max-width: none;
+  }
+
+  .site-search-panel {
+    left: 0;
+    right: auto;
+    width: min(100%, calc(100vw - 2rem));
+  }
+
+  .primary-nav a {
+    min-height: 46px;
+  }
+
+  .page-utilities {
+    align-items: stretch;
+  }
+
+  .page-quick-tools,
+  .page-utilities .button-secondary,
+  .button-group > *,
+  .form-actions > *,
+  .checklist-tools > * {
+    width: 100%;
+  }
+
+  .mobile-help-strip-inner {
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --phase20-card-pad: .95rem;
+    --phase20-section-gap: 1.35rem;
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  .page-head h1 {
+    max-width: 100%;
+  }
+
+  .page-head .lead {
+    font-size: 1rem;
+  }
+
+  .mobile-help-strip-inner,
+  .mobile-help-actions {
+    flex-direction: column;
+  }
+
+  .mobile-help-actions a {
+    width: 100%;
+  }
+
+  .progress-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .progress-steps li {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    text-align: left;
+  }
+
+  .progress-steps li::before {
+    margin: 0;
+    flex: 0 0 24px;
+  }
+
+  .progress-steps li::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .001ms !important;
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media print {
+  .card,
+  .resource-card,
+  .resource-panel,
+  .timeline-step,
+  .notice-bar,
+  .callout,
+  .warning,
+  .field-group,
+  details {
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  .page-wrap {
+    padding-block: 0;
+  }
+}
