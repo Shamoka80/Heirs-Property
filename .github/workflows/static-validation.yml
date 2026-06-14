@@ -1,0 +1,42 @@
+name: Static validation
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Run static validation suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          REPOSITORY: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git init --quiet .
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${REPOSITORY}.git"
+          git fetch --quiet --depth=1 origin "${BRANCH_NAME}"
+          git checkout --quiet FETCH_HEAD
+
+      - name: Run guardrail checks
+        run: python3 scripts/check-guardrails.py
+
+      - name: Run interaction checks
+        run: python3 scripts/check-interactions.py
+
+      - name: Run link checks
+        run: python3 scripts/check-links.py
+
+      - name: Run predeploy checks
+        run: bash scripts/predeploy-check.sh
+
+      - name: Check site JavaScript syntax
+        run: node --check assets/js/site.js
