@@ -1,0 +1,44 @@
+name: Static validation
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Run static validation suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run guardrail checks
+        run: python3 scripts/check-guardrails.py
+
+      - name: Run interaction checks
+        run: python3 scripts/check-interactions.py
+
+      - name: Run link checks
+        run: python3 scripts/check-links.py
+
+      - name: Run predeploy checks
+        run: bash scripts/predeploy-check.sh
+
+      - name: Check site JavaScript syntax
+        run: node --check assets/js/site.js
