@@ -502,6 +502,124 @@ input[type="date"] {
   }
 }
 
+/* Phase 20 mobile legibility correction.
+   Phone-width only: color and contrast remediation, not a spacing/layout pass. */
+@media (max-width: 700px) {
+  :root {
+    --phase20-section-panel-bg: #FFFFFF;
+    --phase20-section-panel-alt: #F7F9FC;
+    --phase20-card-bg: #FFFFFF;
+  }
+
+  body {
+    background: #F7F9FC;
+    color: var(--text);
+  }
+
+  body::before,
+  body:not(.mode-dashboard)::before {
+    opacity: .012;
+    filter: grayscale(1) contrast(.55) brightness(1.22);
+  }
+
+  .page-head {
+    background: linear-gradient(165deg, #FFFFFF 0%, #F2F6FB 56%, #F8F3E8 100%);
+    border-bottom-color: #AFA595;
+  }
+
+  .page-head .lead,
+  .lead,
+  .section-intro,
+  .lead-paragraph {
+    color: #303848;
+  }
+
+  .page-main > .section {
+    background: linear-gradient(180deg, #FFFFFF 0%, #F7F9FC 100%);
+    border-color: #AFA595;
+    box-shadow: 0 6px 18px rgba(16, 42, 67, .08);
+  }
+
+  .page-main > .section:nth-of-type(even) {
+    background: linear-gradient(180deg, #FFFEFC 0%, #F3F6F9 100%);
+  }
+
+  .page-main > .section::before {
+    opacity: .95;
+    background: linear-gradient(180deg, #8F4110 0%, #1F3A5F 100%);
+  }
+
+  .section-header {
+    border-bottom-color: #B8AE9C;
+  }
+
+  .card,
+  .resource-card,
+  .resource-panel,
+  .site-map-card,
+  .timeline-step,
+  .note-panel,
+  .checklist-box,
+  .field-group,
+  details,
+  .quick-path-list a {
+    background-color: #FFFFFF;
+    border-color: #AFA595;
+    box-shadow: 0 3px 12px rgba(16, 42, 67, .07);
+    color: var(--text);
+  }
+
+  .callout {
+    background-color: #FFFDFC;
+    border-color: #B9855C;
+    border-left-color: var(--secondary);
+    box-shadow: 0 3px 12px rgba(16, 42, 67, .07);
+  }
+
+  .warning {
+    background-color: #FFF3F0;
+    border-color: #C79A94;
+    border-left-color: var(--danger);
+    box-shadow: 0 3px 12px rgba(138, 45, 45, .08);
+  }
+
+  .notice-bar {
+    background-color: #F1F8F4;
+    border-color: #9FB9A8;
+    box-shadow: 0 3px 12px rgba(16, 42, 67, .07);
+  }
+
+  .page-main,
+  .page-main p,
+  .page-main li,
+  .page-main label,
+  .page-main summary,
+  .card p,
+  .resource-card p,
+  .resource-panel p,
+  .site-map-card p,
+  .timeline-step p,
+  .note-panel p,
+  .callout p,
+  .warning p,
+  .notice-bar p,
+  .checklist-box p {
+    color: var(--text);
+  }
+
+  .section-header p,
+  .help-text,
+  .quick-path-list span,
+  .search-result-snippet,
+  .checklist-meta,
+  .breadcrumbs,
+  .progress-steps li,
+  .kicker,
+  .eyebrow-descriptor {
+    color: #343C4D;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
