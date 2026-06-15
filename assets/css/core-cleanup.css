@@ -69,6 +69,26 @@
   line-height: 1.4;
 }
 
+/* Background overlay remediation: replace the washed-out white field with a navy tint while preserving a faint image layer. */
+body {
+  background: #071a30 !important;
+}
+
+body::before,
+body:not(.mode-dashboard)::before {
+  opacity: .16 !important;
+  filter: saturate(.86) contrast(.9) brightness(.72) !important;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7, 26, 48, .78), rgba(18, 48, 82, .7));
+  pointer-events: none;
+  z-index: 0;
+}
+
 @media (max-width: 899px) {
   .home-hero .hero-actions > * { flex: 0 1 auto; width: auto; }
   .quick-path-list { grid-template-columns: 1fr; }
