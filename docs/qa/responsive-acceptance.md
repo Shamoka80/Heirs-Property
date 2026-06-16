@@ -24,7 +24,7 @@ Capture artifacts for the following active pages/templates each cycle:
 1. `index.html` (home template)
 2. **Long-form content page** (representative content template; use `what-is-heirs-property.html` unless release scope specifies a different long-form page)
 3. `notes.html`
-4. Downloadable brochure access path (verify the active PDF download link and response from `assets/downloads/heirs-property-trifold-brochure.pdf`; do not treat it as an HTML responsive-page template)
+4. Downloadable brochure access path (verify the active PDF download link and response from `assets/downloads/protecting-family-land-trifold.pdf`; do not treat it as an HTML responsive-page template)
 
 ## Legacy/superseded asset record
 The former live brochure page, `printable-guide.html`, is a historical QA record only. It was superseded by the PDF-only brochure delivery model merged in PR #63. Do not include it in active responsive screenshot cycles, active page inventories, live route checks, or current artifact naming examples. Preserve this note so prior QA records remain interpretable.
@@ -99,7 +99,7 @@ For each active page/template and each required viewport, verify all checks belo
 
 ### 4) Downloadable brochure path
 **Pass if all are true:**
-- The homepage, generated footer, search result, and next-step entry points route to `assets/downloads/heirs-property-trifold-brochure.pdf`.
+- The homepage, generated footer, search result, and next-step entry points route to `assets/downloads/protecting-family-land-trifold.pdf`.
 - Download links use clear text such as `Download brochure` or equivalent current copy.
 - The removed live brochure page is not treated as an active route.
 

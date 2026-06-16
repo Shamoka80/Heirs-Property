@@ -6,7 +6,7 @@ from collections import defaultdict
 
 ROOT = Path(__file__).resolve().parents[1]
 HTML_FILES = sorted(ROOT.glob("*.html"))
-BROCHURE_PDF = "assets/downloads/heirs-property-trifold-brochure.pdf"
+BROCHURE_PDF = "assets/downloads/protecting-family-land-trifold.pdf"
 REMOVED_LIVE_ARTIFACTS = [
     "printable-guide.html",
     "assets/css/brochure.css",

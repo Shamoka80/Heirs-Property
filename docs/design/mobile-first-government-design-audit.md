@@ -29,7 +29,7 @@ Active pages reviewed:
 
 Active downloadable asset reviewed after Phase 18 remediation:
 
-- `assets/downloads/heirs-property-trifold-brochure.pdf`
+- `assets/downloads/protecting-family-land-trifold.pdf`
 
 ## Legacy/superseded page record
 
@@ -100,7 +100,7 @@ Every reviewed active root HTML page uses the same shared stylesheet path, share
 
 Status: Pass after Phase 18 remediation.
 
-The live brochure page is no longer an active design target. Current brochure access is through `assets/downloads/heirs-property-trifold-brochure.pdf`, with site routing and download language updated accordingly. Any historical mentions of the former live page should remain confined to legacy/superseded records and should not appear in active route inventories.
+The live brochure page is no longer an active design target. Current brochure access is through `assets/downloads/protecting-family-land-trifold.pdf`, with site routing and download language updated accordingly. Any historical mentions of the former live page should remain confined to legacy/superseded records and should not appear in active route inventories.
 
 ## Corrective action completed
 
