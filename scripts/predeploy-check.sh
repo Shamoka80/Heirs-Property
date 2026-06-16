@@ -9,7 +9,8 @@ required_files=(
   "assets/icons/apple-touch-icon.png"
   "assets/images/social-preview-2.png"
   "assets/images/HPfamilyland.gif"
-  "assets/downloads/heirs-property-trifold-brochure.pdf"
+  "assets/downloads/protecting-family-land-trifold.pdf"
+  "assets/downloads/how-to-print-this-brochure.pdf"
 )
 
 removed_files=(
@@ -21,8 +22,10 @@ removed_files=(
 required_html_patterns=(
   "assets/css/site.css?v=20260414"
   "assets/icons/apple-touch-icon.png"
-  "assets/downloads/heirs-property-trifold-brochure.pdf"
+  "assets/downloads/protecting-family-land-trifold.pdf"
+  "assets/downloads/how-to-print-this-brochure.pdf"
   "Download brochure"
+  "How to print this brochure"
 )
 
 missing=0
@@ -47,19 +50,23 @@ for f in "${removed_files[@]}"; do
   fi
 done
 
-if [[ -f "assets/downloads/heirs-property-trifold-brochure.pdf" ]]; then
-  if python3 - <<'PY'
+echo "[predeploy] Checking required PDF headers..."
+for pdf in "assets/downloads/protecting-family-land-trifold.pdf" "assets/downloads/how-to-print-this-brochure.pdf"; do
+  if [[ -f "$pdf" ]]; then
+    if PDF_PATH="$pdf" python3 - <<'PY'
 from pathlib import Path
-p = Path('assets/downloads/heirs-property-trifold-brochure.pdf')
+import os
+p = Path(os.environ["PDF_PATH"])
 raise SystemExit(0 if p.read_bytes().startswith(b'%PDF') else 1)
 PY
-  then
-    echo "  ✓ PDF header verified: assets/downloads/heirs-property-trifold-brochure.pdf"
-  else
-    echo "  ✗ PDF header check failed: assets/downloads/heirs-property-trifold-brochure.pdf"
-    missing=1
+    then
+      echo "  ✓ PDF header verified: $pdf"
+    else
+      echo "  ✗ PDF header check failed: $pdf"
+      missing=1
+    fi
   fi
-fi
+done
 
 echo "[predeploy] Checking required HTML references..."
 for p in "${required_html_patterns[@]}"; do

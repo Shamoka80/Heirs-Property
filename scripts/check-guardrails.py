@@ -11,7 +11,12 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-BROCHURE_PDF = "assets/downloads/heirs-property-trifold-brochure.pdf"
+BROCHURE_PDF = "assets/downloads/protecting-family-land-trifold.pdf"
+PRINT_GUIDE_PDF = "assets/downloads/how-to-print-this-brochure.pdf"
+REQUIRED_PDFS = {
+    "brochure": BROCHURE_PDF,
+    "print guide": PRINT_GUIDE_PDF,
+}
 REMOVED_LIVE_ARTIFACTS = [
     "printable-guide.html",
     "assets/css/brochure.css",
@@ -62,18 +67,19 @@ def paragraph_for(text, index):
 
 
 def check_pdf_asset():
-    pdf_path = ROOT / BROCHURE_PDF
-    if not pdf_path.exists():
-        fail(f"Missing required brochure PDF asset: {BROCHURE_PDF}")
-        return
-    if not pdf_path.is_file():
-        fail(f"Brochure PDF path is not a file: {BROCHURE_PDF}")
-        return
-    data = pdf_path.read_bytes()
-    if not data.startswith(b"%PDF"):
-        fail(f"Brochure asset is not a valid PDF header: {BROCHURE_PDF}")
-    if len(data) < 1024:
-        fail(f"Brochure PDF appears too small to be a real deliverable: {BROCHURE_PDF}")
+    for label, rel_path in REQUIRED_PDFS.items():
+        pdf_path = ROOT / rel_path
+        if not pdf_path.exists():
+            fail(f"Missing required {label} PDF asset: {rel_path}")
+            continue
+        if not pdf_path.is_file():
+            fail(f"{label.title()} PDF path is not a file: {rel_path}")
+            continue
+        data = pdf_path.read_bytes()
+        if not data.startswith(b"%PDF"):
+            fail(f"{label.title()} asset is not a valid PDF header: {rel_path}")
+        if len(data) < 1024:
+            fail(f"{label.title()} PDF appears too small to be a real deliverable: {rel_path}")
 
 
 def check_removed_artifacts_absent():
@@ -105,8 +111,10 @@ def check_homepage_download_route():
     path = "index.html"
     text = read_text(ROOT / path)
     assert_contains("brochure PDF download route", path, text, f'href="{BROCHURE_PDF}"')
+    assert_contains("print guide PDF download route", path, text, f'href="{PRINT_GUIDE_PDF}"')
     assert_contains("explicit download attribute", path, text, " download")
     assert_contains("download brochure label", path, text, "Download brochure")
+    assert_contains("print guide label", path, text, "How to print this brochure")
     assert_contains("homepage family-land hero image", path, text, "assets/images/HPfamilyland.gif")
 
 
@@ -116,9 +124,13 @@ def check_site_js_download_routing():
     for rel in REMOVED_LIVE_ARTIFACTS:
         assert_not_contains("removed artifact reference in active JavaScript", path, text, rel)
     assert_contains("canonical brochure PDF constant", path, text, f'var brochurePdf = "{BROCHURE_PDF}";')
-    assert_contains("footer download link", path, text, '{ href: brochurePdf, label: "Download brochure", download: true }')
+    assert_contains("canonical print guide PDF constant", path, text, f'var printGuidePdf = "{PRINT_GUIDE_PDF}";')
+    assert_contains("footer brochure download link", path, text, '{ href: brochurePdf, label: "Download brochure", download: true }')
+    assert_contains("footer print guide download link", path, text, '{ href: printGuidePdf, label: "How to print this brochure", download: true }')
     assert_contains("search index brochure route", path, text, 'href: brochurePdf,')
+    assert_contains("search index print guide route", path, text, 'href: printGuidePdf,')
     assert_contains("search result brochure title", path, text, 'title: "Download printable brochure"')
+    assert_contains("search result print guide title", path, text, 'title: "How to print this brochure"')
 
     # Robust next-step brochure-route check: require href: brochurePdf, label: "Download brochure", download: true
     next_step_pattern = re.compile(r'\{[^}]*href:\s*brochurePdf[^}]*label:\s*"Download brochure"[^}]*download:\s*true[^}]*\}', re.S)
@@ -152,6 +164,8 @@ def check_footer_fallbacks():
         "notes.html",
         "resources-get-help.html",
         BROCHURE_PDF,
+        PRINT_GUIDE_PDF,
+        "How to print this brochure",
         "accessibility.html",
         "about-this-guide.html",
     ]
@@ -185,7 +199,7 @@ def main():
             print(f" - {error}")
         return 1
 
-    print(f"OK: PDF-only brochure contract enforced via {BROCHURE_PDF}.")
+    print(f"OK: PDF-only brochure contract enforced via {BROCHURE_PDF} and {PRINT_GUIDE_PDF}.")
     print("OK: Former live brochure page/assets remain absent from active site routing.")
     print("OK: Historical printable-guide.html references are confined to marked legacy/superseded docs.")
     return 0
