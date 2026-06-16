@@ -18,7 +18,7 @@ This note documents the validation performed for the embedded site-search refine
 | `timber income` | `economic-opportunities.html` |
 | `family legacy` | `history-culture-legacy.html` |
 | `tax sale warning` | `how-families-lose-land.html` |
-| `download pdf` | `assets/downloads/heirs-property-trifold-brochure.pdf` |
+| `download pdf` | `assets/downloads/protecting-family-land-trifold.pdf` |
 | `screen reader keyboard` | `accessibility.html` |
 | `save questions deadline` | `notes.html` |
 

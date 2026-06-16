@@ -3,7 +3,8 @@
 
   var pageKey = window.location.pathname.split("/").pop() || "index.html";
   var isHome = pageKey === "index.html";
-  var brochurePdf = "assets/downloads/heirs-property-trifold-brochure.pdf";
+  var brochurePdf = "assets/downloads/protecting-family-land-trifold.pdf";
+  var printGuidePdf = "assets/downloads/how-to-print-this-brochure.pdf";
   var ordinaryGuidePages = {
     "start-here.html": true,
     "what-is-heirs-property.html": true,
@@ -70,7 +71,8 @@
         links: [
           { href: "resources-get-help.html", label: "Get help" },
           { href: "notes.html", label: "Notes" },
-          { href: brochurePdf, label: "Download brochure", download: true }
+          { href: brochurePdf, label: "Download brochure", download: true },
+          { href: printGuidePdf, label: "How to print this brochure", download: true }
         ]
       },
       {
@@ -313,6 +315,14 @@
       headings: ["Download brochure", "South Carolina heirs property", "Before you sign", "Warning signs", "Records to gather", "Questions to ask"],
       keywords: ["brochure", "pdf", "print", "download", "handout", "family meeting", "appointment"],
       text: "Download brochure PDF for heirs’ property, shared family land, title after a death, deed, tax bill, probate, estate papers, South Carolina caution, and resource contacts."
+    },
+    {
+      href: printGuidePdf,
+      title: "How to print this brochure",
+      description: "Download the companion print guide for duplex, short-edge, letter-size brochure printing.",
+      headings: ["Print guide", "Print on both sides", "Flip on short edge", "Letter landscape", "Actual size"],
+      keywords: ["print", "printing", "duplex", "two-sided", "short edge", "flip", "fold", "brochure instructions"],
+      text: "Companion print guide for the heirs property brochure. Use Letter paper, landscape orientation, actual size, print on both sides, and flip on short edge."
     }
   ];
 
@@ -505,7 +515,7 @@
       }
       searchStatus.textContent = matches.length + " ranked search result" + (matches.length === 1 ? "" : "s") + " found.";
       searchResults.innerHTML = '<ul class="search-result-list">' + matches.map(function (match, index) {
-        var download = match.item.href === brochurePdf ? ' download' : '';
+        var download = (match.item.href === brochurePdf || match.item.href === printGuidePdf) ? ' download' : '';
         return '<li class="search-result-item"><a class="search-result-link" href="' + escapeHtml(match.item.href) + '"' + download + ' data-search-result-index="' + index + '"><span class="search-result-title">' + escapeHtml(match.item.title) + '</span><span class="search-result-snippet">' + escapeHtml(match.snippet) + '</span><span class="search-result-url">' + escapeHtml(match.item.href) + '</span></a></li>';
       }).join("") + "</ul>";
     }
