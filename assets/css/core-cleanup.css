@@ -90,6 +90,27 @@
     line-height: 1;
   }
 
-  .home-hero .hero-visual { display: none; }
+  .home-hero .hero-visual {
+    display: block;
+    width: min(100%, 22rem);
+    max-width: 100%;
+    margin: .85rem auto 0;
+    padding: .45rem;
+  }
+
+  .home-hero .hero-visual img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .home-hero .hero-visual figcaption {
+    margin-top: .4rem;
+    font-size: .78rem;
+    line-height: 1.35;
+  }
+
   .home-hero .hero-panel { padding: .55rem .65rem; }
 }
