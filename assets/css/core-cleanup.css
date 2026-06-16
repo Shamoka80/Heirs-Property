@@ -89,6 +89,11 @@
     display: none;
   }
 
+  .next-step-panel,
+  .layout.with-aside > aside {
+    display: none;
+  }
+
   .mode-dashboard .mobile-help-strip,
   .mode-dashboard .site-header::before,
   .mode-dashboard .page-head::before,
