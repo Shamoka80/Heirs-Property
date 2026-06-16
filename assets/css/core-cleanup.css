@@ -118,8 +118,8 @@
     max-width: 34ch;
   }
 
-  .home-hero .hero-actions {
-    margin-top: .85rem;
+  .mode-dashboard .home-hero .hero-actions {
+    display: none;
   }
 
   .home-hero .hero-visual {
