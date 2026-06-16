@@ -85,7 +85,7 @@
     --brand-gap: clamp(.48rem, 1.8vw, .7rem);
   }
 
-  body[data-step] .page-utilities {
+  body[data-step] .page-utilities > .utility-link {
     display: none;
   }
 
