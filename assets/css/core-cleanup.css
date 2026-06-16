@@ -73,6 +73,156 @@
   display: none;
 }
 
+.notice-bar,
+.status {
+  background-color: #F4F7FA !important;
+  border-color: var(--line-strong) !important;
+  color: var(--text) !important;
+}
+
+.notice-bar {
+  border-left-color: var(--secondary) !important;
+}
+
+.status {
+  color: var(--surface-strong) !important;
+}
+
+.notice-bar h2,
+.notice-bar h3,
+.status strong {
+  color: var(--surface-strong) !important;
+}
+
+.notice-bar p,
+.notice-bar li {
+  color: var(--text) !important;
+}
+
+.notice-bar a,
+.status a {
+  color: var(--link) !important;
+}
+
+.button-group,
+.form-actions,
+.checklist-tools,
+.page-quick-tools {
+  justify-content: flex-start;
+}
+
+.button-group > *,
+.form-actions > *,
+.checklist-tools > *,
+.page-quick-tools > * {
+  text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .page-main > .section,
+  .card,
+  .resource-card,
+  .resource-panel,
+  .site-map-card,
+  .timeline-step,
+  .note-panel,
+  .checklist-box,
+  .field-group,
+  details,
+  .quick-path-list a,
+  .callout,
+  .notice-bar,
+  .table-wrap,
+  .quote-panel,
+  .note-space,
+  .status {
+    background-color: var(--surface) !important;
+    border-color: var(--line-strong) !important;
+    color: var(--text) !important;
+  }
+
+  .page-main > .section:nth-of-type(even),
+  .callout,
+  .notice-bar,
+  .status {
+    background-color: var(--surface-alt) !important;
+  }
+
+  .warning {
+    background-color: var(--danger-bg) !important;
+    border-color: var(--line-strong) !important;
+    border-left-color: var(--danger) !important;
+    color: var(--text) !important;
+  }
+
+  .card h2,
+  .card h3,
+  .resource-card h2,
+  .resource-card h3,
+  .resource-panel h2,
+  .resource-panel h3,
+  .site-map-card h2,
+  .site-map-card h3,
+  .timeline-step h2,
+  .timeline-step h3,
+  .note-panel h2,
+  .note-panel h3,
+  .checklist-box h2,
+  .checklist-box h3,
+  .field-group legend,
+  .page-main > .section h2,
+  .page-main > .section h3,
+  .callout h2,
+  .callout h3,
+  .notice-bar h2,
+  .notice-bar h3 {
+    color: var(--surface-strong) !important;
+  }
+
+  .card p,
+  .card li,
+  .resource-card p,
+  .resource-card li,
+  .resource-panel p,
+  .resource-panel li,
+  .site-map-card p,
+  .site-map-card li,
+  .timeline-step p,
+  .timeline-step li,
+  .note-panel p,
+  .note-panel li,
+  .checklist-box p,
+  .checklist-box li,
+  .field-group p,
+  .field-group li,
+  .page-main > .section p,
+  .page-main > .section li,
+  .callout p,
+  .callout li,
+  .notice-bar p,
+  .notice-bar li,
+  .warning p,
+  .warning li {
+    color: var(--text) !important;
+  }
+
+  .card a,
+  .resource-card a,
+  .resource-panel a,
+  .site-map-card a,
+  .timeline-step a,
+  .note-panel a,
+  .checklist-box a,
+  .field-group a,
+  .page-main > .section a,
+  .callout a,
+  .notice-bar a,
+  .warning a,
+  .status a {
+    color: var(--link) !important;
+  }
+}
+
 @media (max-width: 899px) {
   .home-hero .hero-actions > * { flex: 0 1 auto; width: auto; }
   .quick-path-list { grid-template-columns: 1fr; }
@@ -87,6 +237,27 @@
 
   body[data-step] .page-utilities > .utility-link {
     display: none;
+  }
+
+  .next-step-panel,
+  .layout.with-aside > aside {
+    display: none;
+  }
+
+  .button-group,
+  .form-actions,
+  .checklist-tools,
+  .page-quick-tools {
+    align-items: stretch;
+    gap: .6rem;
+  }
+
+  .button-group > *,
+  .form-actions > *,
+  .checklist-tools > *,
+  .page-quick-tools > * {
+    justify-content: center;
+    width: 100%;
   }
 
   .mode-dashboard .mobile-help-strip,
