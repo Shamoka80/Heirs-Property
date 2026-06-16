@@ -81,6 +81,13 @@
     --brand-gap: clamp(.48rem, 1.8vw, .7rem);
   }
 
+  .mode-dashboard .mobile-help-strip,
+  .mode-dashboard .site-header::before,
+  .mode-dashboard .page-head::before,
+  .mode-dashboard .site-search {
+    display: none;
+  }
+
   .header-inner { padding-block: .48rem; }
   .brand { flex: 1 1 100%; }
   .brand-text {
@@ -90,12 +97,37 @@
     line-height: 1;
   }
 
+  .mode-dashboard .header-actions {
+    width: auto;
+    margin-left: 0;
+  }
+
+  .home-hero .page-head-inner {
+    padding-block: .95rem 1.15rem;
+  }
+
+  .home-hero h1 {
+    font-size: clamp(1.95rem, 8vw, 2.35rem);
+    line-height: 1.08;
+    max-width: 15ch;
+  }
+
+  .home-hero .lead {
+    font-size: 1rem;
+    line-height: 1.42;
+    max-width: 34ch;
+  }
+
+  .home-hero .hero-actions {
+    margin-top: .85rem;
+  }
+
   .home-hero .hero-visual {
     display: block;
-    width: min(100%, 22rem);
+    width: min(100%, 20.5rem);
     max-width: 100%;
-    margin: .85rem auto 0;
-    padding: .45rem;
+    margin: .95rem auto 0;
+    padding: .42rem;
   }
 
   .home-hero .hero-visual img {
@@ -107,9 +139,7 @@
   }
 
   .home-hero .hero-visual figcaption {
-    margin-top: .4rem;
-    font-size: .78rem;
-    line-height: 1.35;
+    display: none;
   }
 
   .home-hero .hero-panel { padding: .55rem .65rem; }
