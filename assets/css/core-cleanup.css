@@ -76,11 +76,20 @@
 
 @media (max-width: 700px) {
   :root {
-    --brand-mark-size: clamp(2.65rem, 2.4rem + 1vw, 3rem);
-    --brand-text-size: clamp(1.06rem, .98rem + .85vw, 1.2rem);
+    --brand-mark-size: clamp(3.35rem, 3rem + 2.2vw, 3.85rem);
+    --brand-text-size: clamp(1.28rem, 1.16rem + .9vw, 1.42rem);
+    --brand-gap: clamp(.48rem, 1.8vw, .7rem);
   }
-  .header-inner { padding-block: .45rem; }
-  .brand { flex-basis: 15rem; }
-  .brand-text { max-width: 10.5rem; }
+
+  .header-inner { padding-block: .48rem; }
+  .brand { flex: 1 1 100%; }
+  .brand-text {
+    max-width: none;
+    white-space: nowrap;
+    text-wrap: nowrap;
+    line-height: 1;
+  }
+
+  .home-hero .hero-visual { display: none; }
   .home-hero .hero-panel { padding: .55rem .65rem; }
 }
