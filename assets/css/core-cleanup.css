@@ -118,6 +118,12 @@
   text-align: center;
 }
 
+.on-page-tools,
+p:has(> a.button-secondary[href="notes.html"]),
+a.button-secondary[href="notes.html"] {
+  display: none !important;
+}
+
 @media (prefers-color-scheme: dark) {
   .page-main > .section,
   .card,
