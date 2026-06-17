@@ -339,4 +339,70 @@
   }
 
   .home-hero .hero-panel { padding: .55rem .65rem; }
+
+  .site-header .site-search {
+    display: none !important;
+  }
+
+  .site-header .header-inner {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: .55rem;
+    padding-block: .48rem;
+  }
+
+  .site-header .brand {
+    grid-column: 1;
+    grid-row: 1;
+    width: auto;
+    max-width: 100%;
+    min-width: 0;
+    flex: none;
+  }
+
+  .site-header .brand-text {
+    max-width: min(16ch, calc(100vw - 8.25rem));
+    white-space: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  .site-header .header-actions {
+    grid-column: 2;
+    grid-row: 1;
+    width: auto;
+    margin-left: 0;
+    justify-self: end;
+    align-self: center;
+    flex: none;
+  }
+
+  .site-header .nav-toggle {
+    min-height: 3.15rem;
+    padding-inline: .95rem;
+  }
+
+  .site-header .primary-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    margin-top: .15rem;
+    padding-top: .55rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .site-header .primary-nav ul {
+    display: grid;
+    gap: .5rem;
+  }
+
+  .site-header .primary-nav a {
+    width: 100%;
+    min-height: 3.05rem;
+    padding: .75rem .95rem;
+  }
 }
