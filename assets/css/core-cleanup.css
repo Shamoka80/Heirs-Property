@@ -412,3 +412,80 @@ a.button-secondary[href="notes.html"] {
     padding: .75rem .95rem;
   }
 }
+
+/* Phase 22 visual clarity pass: selected image breaks and quieter reading rhythm. */
+:root {
+  --ds-section-gap: clamp(1.8rem, 3.7vw, 3.15rem);
+  --ds-card-gap: clamp(1.05rem, 2vw, 1.45rem);
+  --ds-section-pad: clamp(1.2rem, 2.6vw, 1.95rem);
+  --ds-card-pad: clamp(1rem, 1.9vw, 1.35rem);
+}
+
+.page-wrap {
+  padding-block: clamp(1.8rem, 3.8vw, 3.25rem) clamp(3.35rem, 6vw, 5.25rem);
+}
+
+.page-main > .section {
+  border-color: color-mix(in srgb, var(--line) 72%, transparent 28%);
+  box-shadow: none;
+}
+
+.page-main > .section::before {
+  opacity: .62;
+}
+
+.card,
+.resource-card,
+.resource-panel,
+.site-map-card,
+.timeline-step,
+.note-panel,
+.checklist-box,
+.field-group,
+details,
+.quick-path-list a {
+  box-shadow: none;
+}
+
+.content-visual {
+  margin: clamp(1.2rem, 3vw, 2.1rem) 0 clamp(1.55rem, 3.6vw, 2.75rem);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.content-visual img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.content-visual figcaption {
+  max-width: var(--ds-reading-measure);
+  margin: .65rem 0 0;
+  color: var(--muted);
+  font-size: .94rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --ds-section-gap: 1.65rem;
+    --ds-section-pad: 1.08rem;
+    --ds-card-pad: 1rem;
+  }
+
+  .content-visual {
+    margin-block: 1.05rem 1.7rem;
+  }
+
+  .content-visual figcaption {
+    font-size: .86rem;
+  }
+}
