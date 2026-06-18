@@ -14,8 +14,8 @@
   --text: #1F2933;
   --text-soft: #334155;
   --muted: #4B5563;
-  --line: #D6DEE7;
-  --line-strong: #9DAFC1;
+  --line: #E0E6EE;
+  --line-strong: #A8B7C6;
   --primary: #102A43;
   --secondary: #005EA8;
   --accent: #A66F1E;
@@ -31,14 +31,14 @@
   --radius: 10px;
   --radius-sm: 7px;
   --btn-radius: 6px;
-  --shadow-sm: 0 1px 3px rgba(16, 42, 67, .08);
-  --shadow-md: 0 6px 18px rgba(16, 42, 67, .12);
+  --shadow-sm: 0 1px 2px rgba(16, 42, 67, .045);
+  --shadow-md: 0 5px 14px rgba(16, 42, 67, .10);
   --card-shadow: var(--shadow-sm);
 
-  --ds-section-gap: clamp(1.35rem, 2.6vw, 2.25rem);
-  --ds-card-gap: clamp(.85rem, 1.7vw, 1.2rem);
-  --ds-section-pad: clamp(1rem, 2.1vw, 1.55rem);
-  --ds-card-pad: clamp(.95rem, 1.6vw, 1.18rem);
+  --ds-section-gap: clamp(1.6rem, 3vw, 2.65rem);
+  --ds-card-gap: clamp(1rem, 1.9vw, 1.4rem);
+  --ds-section-pad: clamp(1.1rem, 2.25vw, 1.7rem);
+  --ds-card-pad: clamp(1.05rem, 1.75vw, 1.3rem);
   --ds-reading-measure: 68ch;
   --ds-page-head-bg: linear-gradient(180deg, #FFFFFF 0%, #EEF4FA 100%);
   --ds-section-bg: #FFFFFF;
@@ -338,7 +338,7 @@ body.mode-dashboard::before {
   border-left: 0;
   border-radius: var(--radius);
   background: var(--ds-section-bg);
-  box-shadow: var(--shadow-sm);
+  box-shadow: none;
 }
 
 .page-main > .section:nth-of-type(even) {
@@ -458,7 +458,7 @@ details,
   background-color: var(--ds-card-bg);
   border-color: var(--line);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+  box-shadow: none;
 }
 
 .card,
@@ -518,16 +518,55 @@ details:focus-within {
 .callout {
   background: #F8FBFD;
   border-left-color: var(--secondary);
+  border-color: color-mix(in srgb, var(--secondary) 34%, var(--line) 66%);
+  box-shadow: var(--shadow-sm);
 }
 
 .warning {
   background: var(--danger-bg);
   border-left-color: var(--danger);
+  border-color: #E7B7B2;
+  box-shadow: var(--shadow-sm);
 }
 
 .notice-bar {
   background: var(--success-bg);
   border-left: 5px solid #2E8540;
+  box-shadow: var(--shadow-sm);
+}
+
+.checklist-box,
+.note-panel {
+  border-color: color-mix(in srgb, var(--secondary) 18%, var(--line) 82%);
+  box-shadow: var(--shadow-sm);
+}
+
+.content-visual,
+.section-image {
+  margin: clamp(1rem, 2.2vw, 1.55rem) 0;
+}
+
+.content-visual img,
+.section-image img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.content-visual figcaption,
+.section-image figcaption,
+.content-visual .caption,
+.section-image .caption {
+  max-width: var(--ds-reading-measure);
+  margin: .6rem 0 0;
+  color: var(--muted);
+  font-size: .94rem;
+  line-height: 1.45;
 }
 
 .hero-panel,
@@ -778,9 +817,10 @@ th {
 
 @media (max-width: 700px) {
   :root {
-    --ds-section-gap: 1.35rem;
-    --ds-section-pad: 1rem;
-    --ds-card-pad: .95rem;
+    --ds-section-gap: 1.55rem;
+    --ds-card-gap: 1.05rem;
+    --ds-section-pad: 1.08rem;
+    --ds-card-pad: 1rem;
   }
 
   body {
@@ -814,7 +854,7 @@ th {
   }
 
   .page-head-inner {
-    padding-block: clamp(.95rem, 3.4vw, 1.2rem);
+    padding-block: clamp(1.08rem, 3.8vw, 1.35rem);
   }
 
   .page-head h1 {
@@ -832,7 +872,7 @@ th {
     padding: var(--ds-section-pad);
     border-radius: var(--radius);
     background: var(--ds-section-bg);
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
   }
 
   .page-main > .section:nth-of-type(even) {
@@ -856,23 +896,42 @@ th {
   .quick-path-list a {
     background-color: #FFFFFF;
     border-color: var(--line);
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
     color: var(--text);
   }
 
   .callout {
     background-color: #F8FBFD;
-    border-color: var(--line);
+    border-color: color-mix(in srgb, var(--secondary) 34%, var(--line) 66%);
     border-left-color: var(--secondary);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .checklist-box,
+  .note-panel {
+    border-color: color-mix(in srgb, var(--secondary) 18%, var(--line) 82%);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .content-visual,
+  .section-image {
+    margin-block: 1rem;
+  }
+
+  .content-visual img,
+  .section-image img {
+    aspect-ratio: 4 / 3;
   }
 
   .warning {
     background-color: var(--danger-bg);
     border-color: #E7B7B2;
     border-left-color: var(--danger);
+    box-shadow: var(--shadow-sm);
   }
 
   .notice-bar {
+    box-shadow: var(--shadow-sm);
     background-color: var(--success-bg);
     border-color: #A7CDB7;
     border-left-color: #2E8540;
